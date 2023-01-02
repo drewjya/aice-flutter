@@ -1,3 +1,7 @@
 abstract class AuthRepository {
-  // TODO: add your impl here
+  Future<void> signIn({required String email, required String password});
+  Future<void> register(
+      {required String email,
+      required String password,
+      required String userName});
 }

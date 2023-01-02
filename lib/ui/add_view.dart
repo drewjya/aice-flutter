@@ -908,6 +908,7 @@ class _AddViewState extends State<AddView> {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     crossAxisCount: 2,
+                    shrinkWrap: true,
                     children: <Widget>[
                       if (pilihanToko == "Superhyper") ...[
                         PickerWidget(
