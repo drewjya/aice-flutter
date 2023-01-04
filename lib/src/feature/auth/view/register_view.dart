@@ -1,29 +1,25 @@
+import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../net/flutterfire.dart';
-import 'authentication.dart';
-import 'home_view.dart';
+class RegisterView extends HookConsumerWidget {
+  /// TODO add your comment here
+  const RegisterView({Key? key}) : super(key: key);
 
-class Register extends StatefulWidget {
-  @override
-  _RegisterState createState() => _RegisterState();
-}
-
-class _RegisterState extends State<Register> {
-  final TextEditingController _emailField = TextEditingController();
-  final TextEditingController _passwordField = TextEditingController();
-  final TextEditingController _usernameField = TextEditingController();
-
-  String assetName = "assets/register.svg";
+  static const routeName = '/registerView';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final usernameController = useTextEditingController();
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+          width: 100.width(context),
+          height: 100.height(context),
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
@@ -31,19 +27,20 @@ class _RegisterState extends State<Register> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset(
-                assetName,
+                "assets/register.svg",
                 width: 65,
               ),
               const SizedBox(
                 height: 20,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 1.3,
+                width: (100 / 1.3).width(context),
                 child: TextFormField(
                   style: const TextStyle(color: Colors.black),
-                  controller: _usernameField,
+                  controller: usernameController,
                   decoration: const InputDecoration(
                     hintText: "Justin Bieber",
+                    prefixIcon: Icon(Icons.person),
                     hintStyle: TextStyle(
                       color: Colors.black38,
                     ),
@@ -54,14 +51,15 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height / 35),
+              SizedBox(height: (100 / 35).height(context)),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 1.3,
+                width: (100 / 1.3).width(context),
                 child: TextFormField(
                   style: const TextStyle(color: Colors.black),
-                  controller: _emailField,
+                  controller: emailController,
                   decoration: const InputDecoration(
                     hintText: "something@email.com",
+                    prefixIcon: Icon(Icons.mail),
                     hintStyle: TextStyle(
                       color: Colors.black38,
                     ),
@@ -72,15 +70,16 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height / 35),
+              SizedBox(height: (100 / 35).height(context)),
               SizedBox(
-                width: MediaQuery.of(context).size.width / 1.3,
+                width: (100 / 1.3).width(context),
                 child: TextFormField(
                   style: const TextStyle(color: Colors.black),
-                  controller: _passwordField,
+                  controller: passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
                     hintText: "password",
+                    prefixIcon: Icon(Icons.key),
                     hintStyle: TextStyle(
                       color: Colors.black38,
                     ),
@@ -93,47 +92,37 @@ class _RegisterState extends State<Register> {
               ),
               const SizedBox(height: 20),
               Container(
-                width: MediaQuery.of(context).size.width / 2,
+                width: (100 / 2).width(context),
                 height: 37,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6.0),
-                  gradient: LinearGradient(
-                    colors: const [
+                  gradient: const LinearGradient(
+                    colors: [
                       Color.fromARGB(255, 62, 182, 226),
                       Color.fromARGB(255, 148, 231, 225),
                     ],
                   ),
                 ),
-                child: MaterialButton(
-                  onPressed: () async {
-                    bool shouldNavigate = await register(
-                      _emailField.text,
-                      _passwordField.text,
-                      _usernameField.text,
-                    );
-                    if (shouldNavigate) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeView(),
-                        ),
-                      );
-                    }
-                  },
-                  textColor: Colors.white,
-                  child: Text("Buat Akun"),
+                child: ElevatedButton(
+                  onPressed: () async {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                  ),
+                  child: const Text("Buat Akun"),
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const Authentication(),
-                    ),
+                    LoginView.routeName,
+                    (route) => false,
                   );
                 },
                 child: const Text(
