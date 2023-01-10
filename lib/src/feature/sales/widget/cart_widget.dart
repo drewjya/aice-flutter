@@ -1,5 +1,7 @@
+import 'package:aice/src/helper/firebase_helper.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -89,36 +91,153 @@ class CartWidget extends StatelessWidget {
                                   ref.invalidate(authStateChangesProvider);
                                   Navigator.pushReplacementNamed(
                                       context, LoginView.routeName);
-
-                                  // signOut();
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) =>
-                                  //         const Authentication(),
-                                  //   ),
-                                  // );
                                 },
-                                child: Row(
-                                  children: const <Widget>[
-                                    Icon(
-                                      Icons.logout,
-                                      color: Colors.white70,
-                                      size: 12,
+                                child: Row(children: <Widget>[
+                                  const Icon(
+                                    Icons.logout,
+                                    color: Colors.white70,
+                                    size: 12,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  const Flexible(
+                                    child: Text(
+                                      "Logout",
+                                      style: TextStyle(
+                                          color: Colors.white70, fontSize: 12),
                                     ),
-                                    SizedBox(
-                                      width: 8,
+                                  ),
+                                  if (ref
+                                          .read(firebaseAuthProvider)
+                                          .currentUser
+                                          ?.email ==
+                                      "test@test.com") ...[
+                                    const SizedBox(
+                                      width: 40,
                                     ),
-                                    Flexible(
-                                      child: Text(
-                                        "Logout",
-                                        style: TextStyle(
-                                            color: Colors.white70,
-                                            fontSize: 12),
-                                      ),
-                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return HookBuilder(
+                                                    builder: (context) {
+                                                  final key =
+                                                      useTextEditingController();
+                                                  final docID =
+                                                      useTextEditingController();
+                                                  final value =
+                                                      useTextEditingController();
+                                                  final currValue =
+                                                      useTextEditingController();
+                                                  return Dialog(
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: SizedBox(
+                                                        height: 500,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.8,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      15),
+                                                          child: Column(
+                                                            children: [
+                                                              const Center(
+                                                                child: Text(
+                                                                  "EDIT FIELD",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        40,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              TextField(
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  hintText:
+                                                                      "forms/NYwmqBdgGJXyYjp1nkt82LusssxnY53/form/",
+                                                                  labelText:
+                                                                      "Doc ID",
+                                                                ),
+                                                                minLines: 2,
+                                                                maxLines: 5,
+                                                                controller:
+                                                                    docID,
+                                                              ),
+                                                              TextField(
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  hintText:
+                                                                      "Key",
+                                                                  labelText:
+                                                                      "Key",
+                                                                ),
+                                                                controller: key,
+                                                              ),
+                                                              TextField(
+                                                                controller:
+                                                                    value,
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  hintText:
+                                                                      "Value",
+                                                                  labelText:
+                                                                      "Value",
+                                                                ),
+                                                              ),
+                                                              TextField(
+                                                                controller:
+                                                                    currValue,
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  hintText:
+                                                                      "Curr Value",
+                                                                  labelText:
+                                                                      "Curr Value",
+                                                                ),
+                                                              ),
+                                                              ElevatedButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    FirebaseHelper
+                                                                        .instance
+                                                                        .batchUpdate(
+                                                                            updateCollection: docID
+                                                                                .text,
+                                                                            newValue: value
+                                                                                .text,
+                                                                            currentValue: currValue
+                                                                                .text,
+                                                                            updateField: key
+                                                                                .text)
+                                                                        .then((value) =>
+                                                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.toString()))));
+                                                                  },
+                                                                  child: const Text(
+                                                                      "Submit"))
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                              });
+                                        },
+                                        child: const Text("EDIT"))
                                   ],
-                                ),
+                                ]),
                               );
                             }),
                           ],
