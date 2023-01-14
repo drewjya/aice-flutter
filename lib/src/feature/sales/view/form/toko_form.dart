@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 class TokoForm extends StatelessWidget {
   final TextEditingController namaTokoController;
   final TextEditingController kodeTokoController;
+
   const TokoForm(
+      {super.key,
+      required this.namaTokoController,
+      required this.kodeTokoController});
+
+  const TokoForm.absensi(
       {super.key,
       required this.namaTokoController,
       required this.kodeTokoController});

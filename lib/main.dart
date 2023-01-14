@@ -1,3 +1,6 @@
+import 'package:aice/src/feature/absent/view/absent_view.dart';
+import 'package:aice/src/feature/absent/view/check_in_view.dart';
+import 'package:aice/src/feature/absent/view/check_out_view.dart';
 import 'package:aice/src/src.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +52,14 @@ class MyApp extends StatelessWidget {
               return GenRoute.routeDef(page: const MainView());
             case AddView.routeName:
               return GenRoute.routeDef(page: const AddView());
+            case AbsensiFormView.routeName:
+              return GenRoute.routeDef(page: const AbsensiFormView());
             case SalesDetailView.routeName:
               return GenRoute.routeDef(page: const SalesDetailView());
+            case CheckInView.routeName:
+              return GenRoute.routeDef(page: const CheckInView());
+            case CheckOutView.routeName:
+              return GenRoute.routeDef(page: const CheckOutView());
             default:
               return GenRoute.routeDef(page: const Scaffold());
           }

@@ -1,3 +1,6 @@
+import 'package:aice/src/core/common/fabs_with_icon.dart';
+import 'package:aice/src/core/common/overlay_layout.dart';
+import 'package:aice/src/feature/absent/view/absensi_view.dart';
 import 'package:aice/src/feature/feature.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -17,14 +20,28 @@ class MainView extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final currIndex = useState(0);
     return Scaffold(
-      extendBody: true,
-      body: [const FeedView(), const HistoryView()][currIndex.value],
+      // extendBody: true,
+      body: [
+        const FeedView(),
+        const AbsensiView(),
+        Container(),
+        const HistoryView()
+      ][currIndex.value],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         elevation: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_sharp),
+            label: 'Absensi SPG',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt_rounded),
+            label: 'Form MD',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_list_bulleted_rounded),
@@ -33,21 +50,36 @@ class MainView extends HookConsumerWidget {
         ],
         currentIndex: currIndex.value,
         onTap: (value) {
-          currIndex.changeValue(value);
+          if (value == 2) {
+            Navigator.pushNamed(context, AddView.routeName);
+          } else {
+            currIndex.changeValue(value);
+          }
         },
         selectedItemColor: Colors.black,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, AddView.routeName);
-        },
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
+
+  Widget _buildFab(BuildContext context) {
+    final icons = [Icons.sms, Icons.mail];
+    return AnchoredOverlay(
+      showOverlay: true,
+      overlayBuilder: (context, offset) {
+        return CenterAbout(
+          position: Offset(offset.dx, offset.dy),
+          child: FabWithIcons(
+            icons: icons,
+            onIconTapped: (value) {},
+          ),
+        );
+      },
+      child: IconButton(
+        onPressed: () {},
+        tooltip: 'Increment',
+        icon: const Icon(Icons.add),
+      ),
+    );
+  }
+  //  Navigator.pushNamed(context, AddView.routeName);
 }

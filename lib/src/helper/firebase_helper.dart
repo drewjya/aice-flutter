@@ -1,14 +1,11 @@
 import 'package:aice/src/src.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseHelper {
   static final FirebaseHelper instance = FirebaseHelper._internal();
 
-  FirebaseHelper._internal();
-
-  init(FirebaseFirestore fireStore) {
-    _firestore = fireStore;
+  FirebaseHelper._internal() {
+    _firestore = FirebaseFirestore.instance;
   }
 
   late FirebaseFirestore _firestore;
@@ -21,42 +18,15 @@ class FirebaseHelper {
         .map((event) => event.docs.map((e) => generator(e.data())).toList());
   }
 
-  updateBatch(
-      String docId, String value, String key, BuildContext context) async {
-    final batch = _firestore.batch();
-
-// Set the value of 'NYC'
-// /forms/NYwmqBdgGJXyYjp1nkt82LuWnY53/form/02488860-8cc4-11ed-b6cd-55433ce58686
-    final forms =
-        _firestore.collection('forms/NYwmqBdgGJXyYjp1nkt82LuWnY53/form');
-    forms.snapshots().map((event) => dPrint(event.docs.map((e) => e.data())));
-
-    batch.update(forms.doc(), {key: value});
-    batch.commit().then((_) {
-      dPrint("done");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Done")));
-    }, onError: (e) {
-      print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
-    });
-  }
-
   Future<bool> batchUpdate(
-    {required String updateCollection,
-    required String newValue,
-    required String currentValue,
-    required String updateField}
-  ) async {
-    CollectionReference collectionRef =
-        FirebaseFirestore.instance.collection(updateCollection);
+      {required String updateCollection,
+      required String newValue,
+      required String currentValue,
+      required String updateField}) async {
+    CollectionReference collectionRef = _firestore.collection(updateCollection);
 
-    WriteBatch batch = FirebaseFirestore.instance.batch();
+    WriteBatch batch = _firestore.batch();
 
-    dPrint(newValue);
-    dPrint(updateField);
-    dPrint(currentValue);
     final a = await collectionRef
         .where(updateField, isEqualTo: currentValue)
         .get()
