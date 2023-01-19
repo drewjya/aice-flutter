@@ -1,4 +1,5 @@
 import 'package:aice/src/src.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +16,42 @@ class RegisterView extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final usernameController = useTextEditingController();
+    ref.listen(authStateChangesProvider, (previous, AsyncValue<User?> next) {
+      next.when(
+        data: (data) {
+          if (data != null) {
+            Navigator.pushReplacementNamed(context, MainView.routeName);
+          }
+        },
+        error: (error, stackTrace) {},
+        loading: () {},
+      );
+    });
+    ref.listen(authProvider, (previous, AsyncValue next) {
+      next.when(
+        data: (data) {
+          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, MainView.routeName);
+        },
+        error: (error, stackTrace) {
+          Navigator.pop(context);
+          if (error != "") {
+            dPrint(error.runtimeType);
+            if (error is FirebaseAuthException) {
+              showToast(context, (error).message ?? "");
+            }
+          }
+        },
+        loading: () {
+          showDialog(
+            context: context,
+            builder: (context) =>
+                const Center(child: CircularProgressIndicator()),
+          );
+        },
+      );
+    });
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -104,7 +141,12 @@ class RegisterView extends HookConsumerWidget {
                   ),
                 ),
                 child: ElevatedButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    ref.read(authProvider.notifier).register(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        userName: usernameController.text);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent,
