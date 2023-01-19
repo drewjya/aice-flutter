@@ -34,7 +34,7 @@ class AbsentRepositoryImpl extends AbsentRepository {
       await ref
           .read(databaseProvider)!
           .collection("absensi/$uid/checkIn")
-          .doc(DateFormat("yyyyMMdd").format(DateTime.now()))
+          .doc("${DateFormat("yyyyMMdd").format(DateTime.now())}|$uid")
           .set(checkInModel.toMap());
       return "Berhasil melakukan Check In";
     } on FirebaseException catch (e) {
@@ -70,7 +70,7 @@ class AbsentRepositoryImpl extends AbsentRepository {
       await ref
           .read(databaseProvider)!
           .collection("absensi/$uid/checkOut")
-          .doc(DateFormat("yyyyMMdd").format(DateTime.now()))
+          .doc("${DateFormat("yyyyMMdd").format(DateTime.now())}|$uid")
           .set(checkInModel.toMap());
       return "Berhasil melakukan Check Out";
     } on FirebaseException catch (e) {

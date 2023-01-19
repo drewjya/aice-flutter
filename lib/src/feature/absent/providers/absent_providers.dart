@@ -10,7 +10,7 @@ final checkInAbsensiProvider = StreamProvider<CheckInModel?>((ref) async* {
         .collection("absensi")
         .doc(auth)
         .collection("checkIn")
-        .doc(DateFormat("yyyyMMdd").format(DateTime.now()));
+        .doc("${DateFormat("yyyyMMdd").format(DateTime.now())}|$auth");
     dPrint(user.path);
 
     yield* user.snapshots().map((event) {
@@ -34,7 +34,7 @@ final checkOutAbsensiProvider = StreamProvider<CheckOutModel?>((ref) async* {
         .collection("absensi")
         .doc(auth)
         .collection("checkOut")
-        .doc(DateFormat("yyyyMMdd").format(DateTime.now()));
+        .doc("${DateFormat("yyyyMMdd").format(DateTime.now())}|$auth");
     dPrint(user.path);
 
     yield* user.snapshots().map((event) {
