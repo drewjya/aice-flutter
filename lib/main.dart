@@ -1,6 +1,4 @@
-import 'package:aice/src/feature/absent/view/absent_view.dart';
-import 'package:aice/src/feature/absent/view/check_in_view.dart';
-import 'package:aice/src/feature/absent/view/check_out_view.dart';
+import 'package:aice/firebase_options.dart';
 import 'package:aice/src/src.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    name: "AICE Suppliers",
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -52,8 +53,8 @@ class MyApp extends StatelessWidget {
               return GenRoute.routeDef(page: const MainView());
             case AddView.routeName:
               return GenRoute.routeDef(page: const AddView());
-            case AbsensiFormView.routeName:
-              return GenRoute.routeDef(page: const AbsensiFormView());
+            case AddTokoFormView.routeName:
+              return GenRoute.routeDef(page: const AddTokoFormView());
             case SalesDetailView.routeName:
               return GenRoute.routeDef(page: const SalesDetailView());
             case CheckInView.routeName:

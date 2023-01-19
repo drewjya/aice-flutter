@@ -1,7 +1,10 @@
-import 'package:aice/src/core/config/date_config.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final salesCurrentProvider = StateProvider<SalesHistoryModel?>((ref) {
+  return null;
+});
 
 class HistoryView extends StatelessWidget {
   const HistoryView({super.key});
@@ -41,6 +44,9 @@ class HistoryView extends StatelessWidget {
                         final curr = data[index];
                         return SalesCart(
                           onTap: () {
+                            ref
+                                .read(salesCurrentProvider.notifier)
+                                .update((state) => curr);
                             Navigator.pushNamed(
                                 context, SalesDetailView.routeName);
                           },

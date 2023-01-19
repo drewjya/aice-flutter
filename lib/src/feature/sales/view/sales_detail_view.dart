@@ -1,16 +1,14 @@
-import 'dart:math';
-
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SalesDetailView extends StatelessWidget {
+class SalesDetailView extends ConsumerWidget {
   const SalesDetailView({super.key});
   static const routeName = "/salesDetailView";
 
   @override
-  Widget build(BuildContext context) {
-    final a = Random().nextInt(10);
-
+  Widget build(BuildContext context, ref) {
+    final curr = ref.watch(salesCurrentProvider)!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -25,9 +23,9 @@ class SalesDetailView extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              const Text(
-                "Nama Toko",
-                style: TextStyle(
+              Text(
+                curr.namaToko,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
                 ),
@@ -40,71 +38,71 @@ class SalesDetailView extends StatelessWidget {
                         delegate: SliverChildListDelegate([
                       DetailText(
                         param: "Tanggal",
-                        value: DateTime.now().toString(),
+                        value: curr.tanggal,
                       ),
                       DetailText(
                         param: "Kode Toko",
-                        value: DateTime.now().toString(),
+                        value: curr.kodeToko,
                       ),
                       DetailText(
                         param: "Pilihan Toko",
-                        value: DateTime.now().toString(),
+                        value: curr.pilihanToko,
                       ),
                       DetailText(
                         param: "Divider Kulkas",
-                        value: DateTime.now().toString(),
+                        value: curr.dividerKulkas,
                       ),
                       DetailText(
                         param: "Jumlah Item Terdisplay",
-                        value: DateTime.now().toString(),
+                        value: curr.jumlahItemTerdisplay,
                       ),
                       DetailText(
                         param: "Kualitas Produk",
-                        value: DateTime.now().toString(),
+                        value: curr.kualitasProduk,
                       ),
                       DetailText(
                         param: "Sticker Freezer",
-                        value: DateTime.now().toString(),
+                        value: curr.stickerFreezer,
                       ),
                       DetailText(
                         param: "Papan Harga",
-                        value: DateTime.now().toString(),
+                        value: curr.papanHarga,
                       ),
                       DetailText(
                         param: "Label Harga",
-                        value: DateTime.now().toString(),
+                        value: curr.labelHarga,
                       ),
                       DetailText(
                         param: "Wobler Promo",
-                        value: DateTime.now().toString(),
+                        value: curr.woblerPromo,
                       ),
                       DetailText(
                         param: "Spanduk",
-                        value: DateTime.now().toString(),
+                        value: curr.spanduk,
                       ),
                       DetailText(
                         param: "Kepenuhan Freezer Atas",
-                        value: DateTime.now().toString(),
+                        value: curr.kepenuhanFreezerAtas,
                       ),
                       DetailText(
                         param: "Kebersihan Debu Freezer",
-                        value: DateTime.now().toString(),
+                        value: curr.kebersihanDebuFreezer,
                       ),
                       DetailText(
                         param: "Atribut Brand Lain",
-                        value: DateTime.now().toString(),
+                        value: curr.brandLain,
                       ),
                       DetailText(
                         param: "Stock Brand Lain",
-                        value: DateTime.now().toString(),
+                        value: curr.stockBrandLain,
                       ),
                       DetailText(
                         param: "Produk Retur",
-                        value: DateTime.now().toString(),
+                        value: curr.produkRetur,
                       ),
                       DetailText(
                         param: "Saran dan Kendala",
-                        value: DateTime.now().toString(),
+                        value: curr.saranDanKendala,
                       ),
                     ])),
                     SliverGrid(
@@ -117,101 +115,100 @@ class SalesDetailView extends StatelessWidget {
                       ),
                       delegate: SliverChildListDelegate.fixed(
                         [
-                          if (a % 2 == 0) ...[
-                            const ImageSalesWidget(
-                              url:
-                                  "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
+                          if (curr.pilihanToko == "Superhyper") ...[
+                            ImageSalesWidget(
+                              url: curr.fotoSelfie ?? "",
                               title: "Foto Selfie Nama Toko",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoKulkasDariJauh ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dari Jauh",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoKulkasTertutup ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dari Dekat",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoFreezerTwo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Satu",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoFreezerTwo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dua",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoFreezerThree ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Tiga",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoFreezerIsland1 ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Island Satu",
                             ),
-                            const ImageSalesWidget(
-                              url:
+                            ImageSalesWidget(
+                              url: curr.fotoFreezerIsland2 ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Island Dua",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Kulkas Island Tiga",
-                              url:
+                              url: curr.fotoFreezerIsland3 ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Kulkas Bawah",
-                              url:
+                              url: curr.fotoFreezerBawah ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto PO",
-                              url:
+                              url: curr.fotoPo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Peralatan",
-                              url:
+                              url: curr.fotoPeralatan ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto POP",
-                              url:
+                              url: curr.fotoPop ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                           ] else ...[
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Selfie",
-                              url:
+                              url: curr.fotoSelfie ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Kulkas Dari Jauh",
-                              url:
+                              url: curr.fotoKulkasDariJauh ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Kulkas Terbuka",
-                              url:
+                              url: curr.fotoKulkasTerbuka ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Kulkas Tertutup",
-                              url:
+                              url: curr.fotoKulkasTertutup ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto PO",
-                              url:
+                              url: curr.fotoPo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
-                            const ImageSalesWidget(
+                            ImageSalesWidget(
                               title: "Foto Freezer Bawah",
-                              url:
+                              url: curr.fotoFreezerBawah ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                           ],

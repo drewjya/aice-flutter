@@ -124,55 +124,53 @@ class _AddViewState extends State<AddView> {
               )
             : TabBarView(
                 children: [
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Mohon masukkan nama toko";
-                                }
-                                return null;
-                              },
-                              controller: _storeNameController,
-                              decoration: const InputDecoration(
-                                labelText: "Nama Toko",
-                                fillColor: Colors.blue,
-                                focusColor: Colors.blue,
-                              ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Mohon masukkan nama toko";
+                              }
+                              return null;
+                            },
+                            controller: _storeNameController,
+                            decoration: const InputDecoration(
+                              labelText: "Nama Toko",
+                              fillColor: Colors.blue,
+                              focusColor: Colors.blue,
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Mohon masukkan kode toko";
-                                }
-                                return null;
-                              },
-                              controller: _kodeTokoController,
-                              decoration: const InputDecoration(
-                                labelText: "Kode Toko",
-                                fillColor: Colors.blue,
-                                focusColor: Colors.blue,
-                              ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Mohon masukkan kode toko";
+                              }
+                              return null;
+                            },
+                            controller: _kodeTokoController,
+                            decoration: const InputDecoration(
+                              labelText: "Kode Toko",
+                              fillColor: Colors.blue,
+                              focusColor: Colors.blue,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   ListView(
                     shrinkWrap: true,

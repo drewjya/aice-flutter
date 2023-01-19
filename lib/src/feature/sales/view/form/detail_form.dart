@@ -24,6 +24,8 @@ class DetailForm extends StatelessWidget {
     required this.debuFreezer,
     required this.bekasLemFreezer,
     required this.posisiFreezer,
+    required this.kategoriFreezer,
+    required this.papanHarga,
   });
   final TextEditingController jumlahPOController;
   final TextEditingController jumlahItemTerdisplayController;
@@ -32,6 +34,7 @@ class DetailForm extends StatelessWidget {
   final ValueNotifier<String?> pilihanToko;
   final ValueNotifier<String?> kualitasProduk;
   final ValueNotifier<String?> stickerFreezer;
+  final ValueNotifier<String?> papanHarga;
   final ValueNotifier<String?> dividerSekat;
   final ValueNotifier<String?> labelHarga;
   final ValueNotifier<String?> woblerPromo;
@@ -45,6 +48,7 @@ class DetailForm extends StatelessWidget {
   final ValueNotifier<String?> debuFreezer;
   final ValueNotifier<String?> bekasLemFreezer;
   final ValueNotifier<String?> posisiFreezer;
+  final ValueNotifier<String?> kategoriFreezer;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -105,6 +109,26 @@ class DetailForm extends StatelessWidget {
             );
           },
           title: "Sticker Freezer",
+          toName: (value) {
+            return value ?? "";
+          },
+        ),
+        CustomDropdownButton<String>(
+          value: papanHarga.value,
+          onChanged: (value) {
+            papanHarga.value = value;
+          },
+          items: const <String>[
+            'Ada',
+            'Tidak Ada',
+          ],
+          toDropdownMenuItem: (value) {
+            return DropdownMenuItem(
+              value: value,
+              child: Text(value),
+            );
+          },
+          title: "Papan Harga",
           toName: (value) {
             return value ?? "";
           },
@@ -418,6 +442,28 @@ class DetailForm extends StatelessWidget {
             return null;
           },
           decoration: const InputDecoration(labelText: 'Produk Retur'),
+        ),
+        CustomDropdownButton<String>(
+          value: kategoriFreezer.value,
+          onChanged: (value) {
+            kategoriFreezer.value = value;
+          },
+          items: const <String>[
+            'Frezer Aice',
+            'Sharing Frezer Brand lain',
+            'Sharing Frezer Aice'
+          ],
+          toDropdownMenuItem: (value) {
+            return DropdownMenuItem(
+              value: value,
+              child: Text(value),
+            );
+          },
+          title: "Kategori Freezer",
+          toName: (value) {
+            return value ?? "";
+          },
+          padding: false,
         ),
       ],
     );

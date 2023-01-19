@@ -33,7 +33,7 @@ class CheckOutModel {
       kodeToko: map['kodeToko'] as String,
       timestamp: map['waktuCheckOut'] as Timestamp,
       listProduk: List<ProdukReportModel>.from(
-        (map['listProduk'] as List<int>).map<ProdukReportModel>(
+        (map['listProduk'] as List).map(
           (x) => ProdukReportModel.fromMap(x as Map<String, dynamic>),
         ),
       ),

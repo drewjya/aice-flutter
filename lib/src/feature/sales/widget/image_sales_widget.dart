@@ -14,8 +14,10 @@ class ImageSalesWidget extends StatelessWidget {
     return Card(
       child: Stack(
         children: [
-          Image.network(
-            url,
+          Center(
+            child: Image.network(
+              url,
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,

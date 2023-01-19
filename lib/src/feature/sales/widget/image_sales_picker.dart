@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aice/src/src.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart' as picker;
@@ -53,7 +54,12 @@ class ImageSalesPicker extends HookWidget {
                   children: [
                     Center(
                       child: file.value != null
-                          ? Image.file(
+                          ? kIsWeb
+                              ? Image.asset(
+                                  file.value!.path,
+                                  fit: BoxFit.fill,
+                                )
+                              : Image.file(
                               file.value!,
                               fit: BoxFit.fill,
                             )

@@ -1,7 +1,4 @@
-import 'dart:math';
-
-import 'package:aice/src/core/core.dart';
-import 'package:aice/src/feature/feature.dart';
+import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,7 +11,10 @@ class CheckOutView extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final namaTokoController = useTextEditingController();
     final kodeTokoController = useTextEditingController();
-    final produkModelList = ProdukModel.produkList();
+    final formKey = useMemoized(
+      () => GlobalKey<FormState>(),
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -28,28 +28,48 @@ class CheckOutView extends HookConsumerWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              TokoForm.absensi(
-                  namaTokoController: namaTokoController,
-                  kodeTokoController: kodeTokoController),
+              Form(
+                key: formKey,
+                child: TokoForm.absensi(
+                    namaTokoController: namaTokoController,
+                    kodeTokoController: kodeTokoController),
+              ),
               ElevatedButton.icon(
                 onPressed: () {
-                  final item = getRandomElement(produkModelList);
-                  ref.read(listProdukReportProvider.notifier).addProduk(
-                        ProdukReportModel(
-                          namaProduk: item.namaProduk,
-                          kodeProduk: item.namaProduk,
-                          jumlahProduk: Random().nextInt(25) + 10,
-                          harga: Random().nextInt(10000) + 1000,
-                        ),
-                      );
+                  Navigator.pushNamed(context, AddTokoFormView.routeName);
                 },
                 icon: const Icon(Icons.add),
                 label: const Text("Tambah Produk"),
               ),
               const ListProdukReport(),
               ElevatedButton(
-                  onPressed: () {},
-                  child: const Center(child: Text("Check In"))),
+                  onPressed: () {
+                    if (formKey.currentState?.validate() ?? false) {
+                      final listProdukReport =
+                          ref.watch(listProdukReportProvider);
+                      if (listProdukReport.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Mohon lakukan input produk")));
+                        return;
+                      }
+                      final checkInModel = CheckOutModel(
+                          listProduk: listProdukReport,
+                          namaToko: namaTokoController.text,
+                          kodeToko: kodeTokoController.text);
+                      ref
+                          .read(absentRepositoryProvider)
+                          .checkOut(checkInModel: checkInModel)
+                          .then((value) {
+                        if (value != null) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(value)));
+                        }
+                        Navigator.pop(context);
+                      });
+                    }
+                  },
+                  child: const Center(child: Text("Check Out"))),
             ],
           ),
         ),
@@ -67,12 +87,15 @@ class ListProdukReport extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final listProdukReport = ref.watch(listProdukReportProvider);
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height:
+          36 * (listProdukReport.length < 12 ? listProdukReport.length : 12) +
+              30,
       child: Column(
         children: [
           Expanded(
             child: ListView.builder(
               itemCount: listProdukReport.length,
+              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 final item = listProdukReport[index];
                 return Column(

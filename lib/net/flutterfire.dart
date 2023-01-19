@@ -104,7 +104,7 @@ Future<bool> addSuperHyperSale(
         .doc(uid)
         .collection('form')
         .doc(formSubmitModel.id);
-    FirebaseFirestore.instance.runTransaction((transaction) async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
       final snapshot = await transaction.get(documentReference);
       if (!snapshot.exists) {
         final res = result.data();
@@ -177,33 +177,18 @@ Future<bool> addOtherSale(
     final bawahFreezer = ref.child('Freezer Bawah').child('${uuid.v4()}.jpg');
     final poFreezer = ref.child('Foto PO').child('${uuid.v4()}.jpg');
     final openedFreezer = ref.child('Opened Freezer').child('${uuid.v4()}.jpg');
-
     await selfies.putFile(otherSubmitModel.pickedSelfie);
-    print("doneSelf");
     await farFreezer.putFile(otherSubmitModel.farFreezer);
-    print("done farFreezer");
     await closeFreezer.putFile(otherSubmitModel.closeFreezer);
-    print("done closeFreezer");
     await bawahFreezer.putFile(otherSubmitModel.freezerBawah);
-    print("done bawahFreezer");
     await poFreezer.putFile(otherSubmitModel.po);
-    print("done poFreezer");
     await openedFreezer.putFile(otherSubmitModel.openedFreezer);
-    print("done openedFreezer");
-
     final selfiesUrl = await selfies.getDownloadURL();
-    print("done selfies");
     final farFreezerUrl = await farFreezer.getDownloadURL();
-    print("done farFreezer");
     final closeFreezerUrl = await closeFreezer.getDownloadURL();
-    print("done closeFreezer");
     final bawahFreezerUrl = await bawahFreezer.getDownloadURL();
-    print("done bawahFreezer");
     final poFreezerUrl = await poFreezer.getDownloadURL();
-    print("done poFreezer");
     final openedFreezerUrl = await openedFreezer.getDownloadURL();
-    print("done openedFreezer");
-    print("done popFreezer");
     final documentReference = FirebaseFirestore.instance
         .collection('forms')
         .doc(uid)
@@ -255,7 +240,6 @@ Future<bool> addOtherSale(
     });
     return true;
   } catch (e) {
-    print(e);
     return false;
   }
 }

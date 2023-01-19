@@ -11,6 +11,9 @@ class CheckInView extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final namaTokoController = useTextEditingController();
     final kodeTokoController = useTextEditingController();
+    final formKey = useMemoized(
+      () => GlobalKey<FormState>(),
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -23,11 +26,31 @@ class CheckInView extends HookConsumerWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TokoForm.absensi(
-                namaTokoController: namaTokoController,
-                kodeTokoController: kodeTokoController),
+            Form(
+              key: formKey,
+              child: TokoForm.absensi(
+                  namaTokoController: namaTokoController,
+                  kodeTokoController: kodeTokoController),
+            ),
             ElevatedButton(
-                onPressed: () {}, child: const Center(child: Text("Check In"))),
+                onPressed: () {
+                  if (formKey.currentState?.validate() ?? false) {
+                    final checkInModel = CheckInModel(
+                        namaToko: namaTokoController.text,
+                        kodeToko: kodeTokoController.text);
+                    ref
+                        .read(absentRepositoryProvider)
+                        .checkIn(checkInModel: checkInModel)
+                        .then((value) {
+                      if (value != null) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(value)));
+                      }
+                      Navigator.pop(context);
+                    });
+                  }
+                },
+                child: const Center(child: Text("Check In"))),
           ],
         ),
       ),

@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
-import 'package:aice/src/feature/sales/widget/image_sales_picker.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +69,7 @@ class ImageForm extends StatelessWidget {
             ImageSalesPicker(title: "Foto Kulkas Jauh", file: fotoKulkasJauh),
             ImageSalesPicker(title: "Foto Kulkas Dekat", file: fotoKulkasDekat),
             ImageSalesPicker(
-                title: "Foto Kulkas Terbuka", file: fotoKulkasDekat),
+                title: "Foto Kulkas Terbuka", file: fotoKulkasTerbuka),
             ImageSalesPicker(title: "Foto PO", file: fotoPo),
             ImageSalesPicker(
                 title: "Foto Freezer Bawah", file: fotoFreezerBawah),

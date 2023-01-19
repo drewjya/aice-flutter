@@ -1,4 +1,3 @@
-import 'package:aice/src/core/config/date_config.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,6 +19,85 @@ class FeedView extends StatelessWidget {
             return CartWidget(userName: userName);
           }),
         ),
+        Consumer(builder: (context, ref, child) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  ref.watch(checkInAbsensiProvider).when(
+                      data: (data) {
+                        if (data == null) {
+                          return const Text("Belum Ada Absensi");
+                        }
+                        return KeteranganAbsenWidget(
+                            tokoAbsen: data.namaToko,
+                            waktuAbsen: data.waktuCheckIn);
+                      },
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () {
+                        return const Text("Load");
+                      }),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (ref.watch(checkInAbsensiProvider).asData?.value !=
+                              null ||
+                          ref.watch(checkInAbsensiProvider).hasError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Sudah Melakukan Check In")));
+                        return;
+                      }
+                      Navigator.pushNamed(context, CheckInView.routeName);
+                    },
+                    child: const Text("Check In"),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 32,
+              ),
+              Column(
+                children: [
+                  ref.watch(checkOutAbsensiProvider).when(
+                      data: (data) {
+                        if (data == null) {
+                          return const Text("Belum Check Out");
+                        }
+                        return KeteranganAbsenWidget(
+                            tokoAbsen: data.namaToko,
+                            waktuAbsen: data.waktuCheckOut);
+                      },
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () {
+                        return const Text("Load");
+                      }),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (ref.watch(checkInAbsensiProvider).asData?.value ==
+                          null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Belum Melakukan Check In")));
+                        return;
+                      }
+                      if (ref.watch(checkOutAbsensiProvider).asData?.value !=
+                              null ||
+                          ref.watch(checkInAbsensiProvider).hasError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Sudah Melakukan Check Out")));
+                        return;
+                      }
+                      Navigator.pushNamed(context, CheckOutView.routeName);
+                    },
+                    child: const Text("Check Out"),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }),
         Consumer(builder: (context, ref, child) {
           final data = ref.watch(salesHistoryTodayProvider).asData?.value ?? [];
           return Container(
@@ -77,6 +155,9 @@ class FeedView extends StatelessWidget {
                           final curr = data[index];
                           return SalesCart(
                             onTap: () {
+                              ref
+                                  .read(salesCurrentProvider.notifier)
+                                  .update((state) => curr);
                               Navigator.pushNamed(
                                   context, SalesDetailView.routeName);
                             },
