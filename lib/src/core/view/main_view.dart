@@ -17,7 +17,11 @@ class MainView extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final currIndex = useState(0);
     return Scaffold(
-      body: [const FeedView(), const HistoryView()][currIndex.value],
+      body: [
+        const FeedView(),
+        const HistoryView(),
+        const AbsensiView()
+      ][currIndex.value],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         elevation: 0,
@@ -30,14 +34,16 @@ class MainView extends HookConsumerWidget {
             icon: Icon(Icons.format_list_bulleted_rounded),
             label: 'History',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Absensi',
+          ),
         ],
         currentIndex: currIndex.value,
         onTap: (value) {
-          if (value == 2) {
-            Navigator.pushNamed(context, AddView.routeName);
-          } else {
+          
             currIndex.changeValue(value);
-          }
+          
         },
         selectedItemColor: Colors.black,
       ),
@@ -48,7 +54,7 @@ class MainView extends HookConsumerWidget {
         backgroundColor: Colors.black,
         child: const Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
     );
   }
 }

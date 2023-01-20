@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 class TokoForm extends StatelessWidget {
   final TextEditingController namaTokoController;
   final TextEditingController kodeTokoController;
+  final bool isEnabled;
 
   const TokoForm(
       {super.key,
       required this.namaTokoController,
+      this.isEnabled = true,
       required this.kodeTokoController});
 
   const TokoForm.absensi(
       {super.key,
       required this.namaTokoController,
+      this.isEnabled = true,
       required this.kodeTokoController});
 
   @override
@@ -20,6 +23,7 @@ class TokoForm extends StatelessWidget {
       children: [
         TextFormField(
           controller: namaTokoController,
+          enabled: isEnabled,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Nama Toko tidak boleh kosong";
@@ -30,6 +34,7 @@ class TokoForm extends StatelessWidget {
         ),
         TextFormField(
           controller: kodeTokoController,
+          enabled: isEnabled,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Kode Toko tidak boleh kosong";

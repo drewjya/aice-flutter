@@ -199,8 +199,44 @@ class AddView extends HookConsumerWidget {
             ],
           ),
           isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey.shade100.withOpacity(0.1),
+                  child: Center(
+                    child: Dialog(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Column(
+                          children: const [
+                            Spacer(),
+                            Text(
+                              "Harap Tunggu!",
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            CircularProgressIndicator(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Mohon Jangan Mengumpulkan\nBerulang-ulang!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            Spacer(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 )
               : const SizedBox.shrink()
         ],

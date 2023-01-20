@@ -14,7 +14,12 @@ class CheckOutView extends HookConsumerWidget {
     final formKey = useMemoized(
       () => GlobalKey<FormState>(),
     );
-
+    useEffect(() {
+      final val = ref.read(checkInAbsensiProvider).asData?.value;
+      namaTokoController.text = val?.namaToko ?? "";
+      kodeTokoController.text = val?.kodeToko ?? "";
+      return null;
+    }, [ref.watch(checkInAbsensiProvider)]);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -31,6 +36,7 @@ class CheckOutView extends HookConsumerWidget {
               Form(
                 key: formKey,
                 child: TokoForm.absensi(
+                    isEnabled: false,
                     namaTokoController: namaTokoController,
                     kodeTokoController: kodeTokoController),
               ),
