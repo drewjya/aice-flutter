@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:aice/src/src.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SalesHistoryModel {
+class OldSalesHistoryModel {
   final String namaToko;
   final String tanggal;
   final String kodeToko;
@@ -38,7 +38,7 @@ class SalesHistoryModel {
   final String? fotoPo;
   final String? fotoPop;
   final String? fotoPeralatan;
-  SalesHistoryModel({
+  OldSalesHistoryModel({
     required this.tanggal,
     required this.namaToko,
     required this.kodeToko,
@@ -74,7 +74,7 @@ class SalesHistoryModel {
     required this.fotoPeralatan,
   });
 
-  SalesHistoryModel copyWith(
+  OldSalesHistoryModel copyWith(
       {String? kodeToko,
       String? jumlahPo,
       String? pilihanToko,
@@ -108,7 +108,7 @@ class SalesHistoryModel {
       String? fotoPeralatan,
       String? namaToko,
       String? tanggal}) {
-    return SalesHistoryModel(
+    return OldSalesHistoryModel(
       tanggal: tanggal ?? this.tanggal,
       namaToko: namaToko ?? this.namaToko,
       kodeToko: kodeToko ?? this.kodeToko,
@@ -182,13 +182,13 @@ class SalesHistoryModel {
     };
   }
 
-  factory SalesHistoryModel.fromMap(Map<String, dynamic> map) {
+  factory OldSalesHistoryModel.fromMap(Map<String, dynamic> map) {
     for (var element in map.keys) {
       if (element == "Created At") {
         dPrint(map[element]);
       }
     }
-    return SalesHistoryModel(
+    return OldSalesHistoryModel(
       tanggal: (map["Created At"] as Timestamp).toDate().toString(),
       namaToko: map["Nama Toko"] as String,
       kodeToko: map["Kode Toko"] as String,
@@ -250,16 +250,16 @@ class SalesHistoryModel {
 
   String toJson() => json.encode(toMap());
 
-  factory SalesHistoryModel.fromJson(String source) =>
-      SalesHistoryModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory OldSalesHistoryModel.fromJson(String source) =>
+      OldSalesHistoryModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'SalesHistoryModel(kodeToko: $kodeToko, jumlahPo: $jumlahPo, pilihanToko: $pilihanToko, dividerKulkas: $dividerKulkas, jumlahItemTerdisplay: $jumlahItemTerdisplay, kualitasProduk: $kualitasProduk, stickerFreezer: $stickerFreezer, papanHarga: $papanHarga, labelHarga: $labelHarga, woblerPromo: $woblerPromo, spanduk: $spanduk, kepenuhanFreezerAtas: $kepenuhanFreezerAtas, kebersihanDebuFreezer: $kebersihanDebuFreezer, brandLain: $brandLain, stockBrandLain: $stockBrandLain, produkRetur: $produkRetur, saranDanKendala: $saranDanKendala, fotoSelfie: $fotoSelfie, fotoKulkasDariJauh: $fotoKulkasDariJauh, fotoKulkasTertutup: $fotoKulkasTertutup, fotoKulkasTerbuka: $fotoKulkasTerbuka, fotoFreezerOne: $fotoFreezerOne, fotoFreezerTwo: $fotoFreezerTwo, fotoFreezerThree: $fotoFreezerThree, fotoFreezerIsland1: $fotoFreezerIsland1, fotoFreezerIsland2: $fotoFreezerIsland2, fotoFreezerIsland3: $fotoFreezerIsland3, fotoFreezerBawah: $fotoFreezerBawah, fotoPo: $fotoPo, fotoPop: $fotoPop, fotoPeralatan: $fotoPeralatan)';
+    return 'OldSalesHistoryModel(kodeToko: $kodeToko, jumlahPo: $jumlahPo, pilihanToko: $pilihanToko, dividerKulkas: $dividerKulkas, jumlahItemTerdisplay: $jumlahItemTerdisplay, kualitasProduk: $kualitasProduk, stickerFreezer: $stickerFreezer, papanHarga: $papanHarga, labelHarga: $labelHarga, woblerPromo: $woblerPromo, spanduk: $spanduk, kepenuhanFreezerAtas: $kepenuhanFreezerAtas, kebersihanDebuFreezer: $kebersihanDebuFreezer, brandLain: $brandLain, stockBrandLain: $stockBrandLain, produkRetur: $produkRetur, saranDanKendala: $saranDanKendala, fotoSelfie: $fotoSelfie, fotoKulkasDariJauh: $fotoKulkasDariJauh, fotoKulkasTertutup: $fotoKulkasTertutup, fotoKulkasTerbuka: $fotoKulkasTerbuka, fotoFreezerOne: $fotoFreezerOne, fotoFreezerTwo: $fotoFreezerTwo, fotoFreezerThree: $fotoFreezerThree, fotoFreezerIsland1: $fotoFreezerIsland1, fotoFreezerIsland2: $fotoFreezerIsland2, fotoFreezerIsland3: $fotoFreezerIsland3, fotoFreezerBawah: $fotoFreezerBawah, fotoPo: $fotoPo, fotoPop: $fotoPop, fotoPeralatan: $fotoPeralatan)';
   }
 
   @override
-  bool operator ==(covariant SalesHistoryModel other) {
+  bool operator ==(covariant OldSalesHistoryModel other) {
     if (identical(this, other)) return true;
 
     return other.kodeToko == kodeToko &&

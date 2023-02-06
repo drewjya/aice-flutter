@@ -1,5 +1,4 @@
 import 'package:aice/src/src.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,36 +12,29 @@ class LoginView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final isObscure = useState(true);
+    emailController.text = 'admin@aice.com';
+    passwordController.text = 'Admin123';
 
-    ref.listen(authStateChangesProvider, (previous, AsyncValue<User?> next) {
+    ref.listen(authProvider, (previous, ProviderValue next) {
       next.when(
         data: (data) {
-          if (data != null) {
-            Navigator.pushReplacementNamed(context, MainView.routeName);
-          }
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MainView.routeName,
+            (route) => false,
+          );
         },
-        error: (error, stackTrace) {},
-        loading: () {},
-      );
-    });
-    ref.listen(authProvider, (previous, AsyncValue next) {
-      next.when(
-        data: (data) {
-          Navigator.pop(context);
-          Navigator.pushReplacementNamed(context, MainView.routeName);
-        },
-        error: (error, stackTrace) {
-          Navigator.pop(context);
-          if (error != "") {
-            dPrint(error.runtimeType);
-            if (error is FirebaseAuthException) {
-              showToast(context, (error).message ?? "");
-            }
+        error: (error) {
+          if (error.message.isNotEmpty) {
+            showToast(context, error.message);
+            
           }
         },
         loading: () {
           showDialog(
             context: context,
+            barrierDismissible: false,
             builder: (context) =>
                 const Center(child: CircularProgressIndicator()),
           );
@@ -91,18 +83,22 @@ class LoginView extends HookConsumerWidget {
                   child: TextFormField(
                     style: const TextStyle(color: Colors.black),
                     controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: "password",
-                      hintStyle: TextStyle(
-                        color: Colors.black38,
-                      ),
-                      labelText: "Password",
-                      prefixIcon: Icon(Icons.key),
-                      labelStyle: TextStyle(
-                        color: Colors.black38,
-                      ),
-                    ),
+                    obscureText: isObscure.value,
+                    decoration: InputDecoration(
+                        hintText: "password",
+                        hintStyle: const TextStyle(
+                          color: Colors.black38,
+                        ),
+                        labelText: "Password",
+                        prefixIcon: const Icon(Icons.key),
+                        labelStyle: const TextStyle(
+                          color: Colors.black38,
+                        ),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              isObscure.value = !isObscure.value;
+                            },
+                            icon: const Icon(Icons.remove_red_eye))),
                   ),
                 ),
                 SizedBox(height: (100 / 35).height(context)),
@@ -120,7 +116,7 @@ class LoginView extends HookConsumerWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () async {
-                      ref.read(authProvider.notifier).signIn(
+                      ref.read(authProvider.notifier).logIn(
                           email: emailController.text,
                           password: passwordController.text);
                     },

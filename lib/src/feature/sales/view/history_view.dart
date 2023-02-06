@@ -1,3 +1,4 @@
+import 'package:aice/src/feature/sales/providers/sales_detail_provider.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,7 +29,7 @@ class HistoryView extends StatelessWidget {
           child: Consumer(
             child: const SizedBox.shrink(),
             builder: (context, ref, child) {
-              return ref.watch(salesHistoryLastWeekProvider).when(
+              return ref.watch(salesHistoryThisWeekProvider).when(
                 data: (data) {
                   dPrint(data.length);
                   if (data.isEmpty) {
@@ -45,21 +46,21 @@ class HistoryView extends StatelessWidget {
                         return SalesCart(
                           onTap: () {
                             ref
-                                .read(salesCurrentProvider.notifier)
-                                .update((state) => curr);
+                                .read(salesDetailProvider.notifier)
+                                .loadDetail(curr.id);
                             Navigator.pushNamed(
                                 context, SalesDetailView.routeName);
                           },
                           namaToko: curr.namaToko,
                           kodeToko: curr.kodeToko,
                           isStart: index == 0,
-                          createdAt: formatDate(curr.tanggal),
+                          createdAt: formatDate(curr.createdAt),
                         );
                       },
                     ),
                   );
                 },
-                error: (error, stackTrace) {
+                error: (error) {
                   return child!;
                 },
                 loading: () {

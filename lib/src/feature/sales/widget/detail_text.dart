@@ -7,7 +7,7 @@ class DetailText extends StatelessWidget {
     required this.value,
   });
   final String param;
-  final String value;
+  final String? value;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +25,7 @@ class DetailText extends StatelessWidget {
           const Text(":  "),
           Expanded(
               child: Text(
-            value,
+            value ??"",
             style: const TextStyle(
               fontSize: 15,
             ),

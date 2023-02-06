@@ -11,14 +11,11 @@ final authStateChangesProvider = StreamProvider<User?>(
     (ref) => ref.watch(firebaseAuthProvider).authStateChanges());
 
 final databaseProvider = Provider<FirebaseFirestore?>((ref) {
-  
-    return FirebaseFirestore.instance;
-  
-  
+  return FirebaseFirestore.instance;
 });
 
-class AuthNotifier extends StateNotifier<AsyncValue> {
-  AuthNotifier(this.ref) : super(AsyncError("", StackTrace.current));
+class OldAuthNotifier extends StateNotifier<AsyncValue> {
+  OldAuthNotifier(this.ref) : super(AsyncError("", StackTrace.current));
   final Ref ref;
   signIn({required String email, required String password}) async {
     state = const AsyncLoading();
@@ -26,6 +23,7 @@ class AuthNotifier extends StateNotifier<AsyncValue> {
         .read(authRepositoryProvider)
         .signIn(email: email, password: password));
   }
+
   register(
       {required String email,
       required String password,
@@ -41,10 +39,13 @@ class AuthNotifier extends StateNotifier<AsyncValue> {
     state =
         await AsyncValue.guard(() => ref.read(firebaseAuthProvider).signOut());
   }
+
+  
 }
 
-final authProvider = StateNotifierProvider<AuthNotifier, AsyncValue>((ref) {
-  return AuthNotifier(ref);
+final oldAuthProvider =
+    StateNotifierProvider<OldAuthNotifier, AsyncValue>((ref) {
+  return OldAuthNotifier(ref);
 });
 
 final userDataProvider = StreamProvider<String>((ref) async* {

@@ -1,7 +1,10 @@
+import 'package:aice/src/core/config/logger.dart';
 import 'package:intl/intl.dart';
 
 String formatDate(String date) {
   final format = DateFormat("dd-MM-yyyy / HH:mm");
-  final dateFormat = DateTime.parse(date);
-  return format.format(dateFormat);
+  dPrint(date);
+  final dateFormat = DateTime.tryParse(date);
+
+  return format.format(dateFormat ?? DateTime.now());
 }

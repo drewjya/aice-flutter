@@ -1,4 +1,4 @@
-import 'package:aice/src/feature/feature.dart';
+import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,6 +16,17 @@ class MainView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final currIndex = useState(0);
+    ref.listen(authProvider, (previous, ProviderValue<AuthModel> next) {
+      next.maybeWhen(
+        orElse: () {},
+        error: (error) {
+          if (error.status == ApiFailure.unauthorized) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, LoginView.routeName, (route) => false);
+          }
+        },
+      );
+    });
     return Scaffold(
       body: [
         const FeedView(),
@@ -41,20 +52,18 @@ class MainView extends HookConsumerWidget {
         ],
         currentIndex: currIndex.value,
         onTap: (value) {
-          
-            currIndex.changeValue(value);
-          
+          currIndex.changeValue(value);
         },
         selectedItemColor: Colors.black,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, AddView.routeName);
+          ref.read(salesRepositoryProvider).getSalesHistoryToday();
+          // Navigator.pushNamed(context, AddView.routeName);
         },
         backgroundColor: Colors.black,
         child: const Icon(Icons.add),
       ),
-      
     );
   }
 }

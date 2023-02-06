@@ -39,21 +39,21 @@ class AbsensiView extends ConsumerWidget {
             children: [
               Column(
                 children: [
-                  ref.watch(checkInAbsensiProvider).maybeWhen(
-                    data: (data) {
-                      if (data == null) {
-                        return const KeteranganAbsenWidget.other(
-                            tokoAbsen: "Belum Ada Absensi");
-                      }
-                      return KeteranganAbsenWidget(
-                          tokoAbsen: data.namaToko,
-                          waktuAbsen: data.waktuCheckIn);
-                    },
-                    orElse: () {
-                      return const KeteranganAbsenWidget.other(
-                          tokoAbsen: "Belum Ada Absensi");
-                    },
-                  ),
+                  // ref.watch(checkInAbsensiProvider).maybeWhen(
+                  //   data: (data) {
+                  //     if (data == null) {
+                  //       return const KeteranganAbsenWidget.other(
+                  //           tokoAbsen: "Belum Ada Absensi");
+                  //     }
+                  //     return KeteranganAbsenWidget(
+                  //         tokoAbsen: data.namaToko,
+                  //         waktuAbsen: data.waktuCheckIn);
+                  //   },
+                  //   orElse: () {
+                  //     return const KeteranganAbsenWidget.other(
+                  //         tokoAbsen: "Belum Ada Absensi");
+                  //   },
+                  // ),
                   ElevatedButton(
                     onPressed: () {
                       if (ref.watch(checkInAbsensiProvider).asData?.value !=
@@ -75,21 +75,21 @@ class AbsensiView extends ConsumerWidget {
               ),
               Column(
                 children: [
-                  ref.watch(checkOutAbsensiProvider).maybeWhen(
-                    data: (data) {
-                      if (data == null) {
-                        return const KeteranganAbsenWidget.other(
-                            tokoAbsen: "Belum Check Out");
-                      }
-                      return KeteranganAbsenWidget(
-                          tokoAbsen: data.namaToko,
-                          waktuAbsen: data.waktuCheckOut);
-                    },
-                    orElse: () {
-                      return const KeteranganAbsenWidget.other(
-                          tokoAbsen: "Belum Ada Absensi");
-                    },
-                  ),
+                  // ref.watch(checkOutAbsensiProvider).maybeWhen(
+                  //   data: (data) {
+                  //     if (data == null) {
+                  //       return const KeteranganAbsenWidget.other(
+                  //           tokoAbsen: "Belum Check Out");
+                  //     }
+                  //     return KeteranganAbsenWidget(
+                  //         tokoAbsen: data.namaToko,
+                  //         waktuAbsen: data.waktuCheckOut);
+                  //   },
+                  //   orElse: () {
+                  //     return const KeteranganAbsenWidget.other(
+                  //         tokoAbsen: "Belum Ada Absensi");
+                  //   },
+                  // ),
                   ElevatedButton(
                     onPressed: () {
                       if (ref.watch(checkInAbsensiProvider).asData?.value ==

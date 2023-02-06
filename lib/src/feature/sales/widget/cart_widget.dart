@@ -5,10 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CartWidget extends StatelessWidget {
-  final String userName;
+  final AuthModel auth;
   const CartWidget({
     Key? key,
-    required this.userName,
+    required this.auth,
   }) : super(key: key);
 
   @override
@@ -28,13 +28,6 @@ class CartWidget extends StatelessWidget {
                       Color.fromRGBO(255, 111, 145, 1),
                       Color.fromRGBO(255, 150, 113, 1)
                     ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                    // boxShadow: const [
-                    //   BoxShadow(
-                    //     color: Color.fromRGBO(255, 150, 113, 1),
-                    //     blurRadius: 12,
-                    //     offset: Offset(0, 6),
-                    //   ),
-                    // ],
                   ),
                 ),
                 Positioned.fill(
@@ -55,7 +48,7 @@ class CartWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              userName,
+                              auth.name,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -63,19 +56,19 @@ class CartWidget extends StatelessWidget {
                               ),
                             ),
                             Row(
-                              children: const <Widget>[
-                                Icon(
+                              children: <Widget>[
+                                const Icon(
                                   Icons.card_travel,
                                   color: Colors.white,
                                   size: 16,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 Flexible(
                                   child: Text(
-                                    "Sales",
-                                    style: TextStyle(
+                                    auth.jenisAkun,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                     ),
                                   ),
@@ -86,8 +79,7 @@ class CartWidget extends StatelessWidget {
                             Consumer(builder: (context, ref, child) {
                               return InkWell(
                                 onTap: () async {
-                                  ref.read(authProvider.notifier).signOut();
-                                  ref.invalidate(authStateChangesProvider);
+                                  ref.read(authProvider.notifier).logOut();
                                   Navigator.pushReplacementNamed(
                                       context, LoginView.routeName);
                                 },
@@ -107,11 +99,7 @@ class CartWidget extends StatelessWidget {
                                           color: Colors.white70, fontSize: 12),
                                     ),
                                   ),
-                                  if (ref
-                                          .read(firebaseAuthProvider)
-                                          .currentUser
-                                          ?.email ==
-                                      "test@test.com") ...[
+                                  if (auth.jenisAkun == "Admin") ...[
                                     const SizedBox(
                                       width: 40,
                                     ),

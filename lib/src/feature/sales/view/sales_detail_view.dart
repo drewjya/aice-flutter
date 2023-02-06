@@ -1,3 +1,4 @@
+import 'package:aice/src/feature/sales/providers/sales_detail_provider.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,7 +9,7 @@ class SalesDetailView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final curr = ref.watch(salesCurrentProvider)!;
+    final curr = ref.watch(salesDetailProvider).asData?.value;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -24,7 +25,7 @@ class SalesDetailView extends ConsumerWidget {
           child: Column(
             children: [
               Text(
-                curr.namaToko,
+                curr?.namaToko ?? "",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
@@ -38,71 +39,71 @@ class SalesDetailView extends ConsumerWidget {
                         delegate: SliverChildListDelegate([
                       DetailText(
                         param: "Tanggal",
-                        value: curr.tanggal,
+                        value: formatDate(curr?.createdAt ?? ''),
                       ),
                       DetailText(
                         param: "Kode Toko",
-                        value: curr.kodeToko,
+                        value: curr?.kodeToko,
                       ),
                       DetailText(
                         param: "Pilihan Toko",
-                        value: curr.pilihanToko,
+                        value: (curr?.pilihanTokoId ?? -1).toString(),
                       ),
                       DetailText(
                         param: "Divider Kulkas",
-                        value: curr.dividerKulkas,
+                        value: curr?.dividerKulkas,
                       ),
                       DetailText(
                         param: "Jumlah Item Terdisplay",
-                        value: curr.jumlahItemTerdisplay,
+                        value: curr?.jumlahItemTerdisplay.toString(),
                       ),
                       DetailText(
                         param: "Kualitas Produk",
-                        value: curr.kualitasProduk,
+                        value: curr?.kualitasProduk,
                       ),
                       DetailText(
                         param: "Sticker Freezer",
-                        value: curr.stickerFreezer,
+                        value: curr?.stickerFreezer,
                       ),
                       DetailText(
                         param: "Papan Harga",
-                        value: curr.papanHarga,
+                        value: curr?.papanHarga,
                       ),
                       DetailText(
                         param: "Label Harga",
-                        value: curr.labelHarga,
+                        value: curr?.labelHarga,
                       ),
                       DetailText(
                         param: "Wobler Promo",
-                        value: curr.woblerPromo,
+                        value: curr?.woblerPromo,
                       ),
                       DetailText(
                         param: "Spanduk",
-                        value: curr.spanduk,
+                        value: curr?.spanduk,
                       ),
                       DetailText(
                         param: "Kepenuhan Freezer Atas",
-                        value: curr.kepenuhanFreezerAtas,
+                        value: curr?.kepenuhanFreezerAtas,
                       ),
                       DetailText(
                         param: "Kebersihan Debu Freezer",
-                        value: curr.kebersihanDebuFreezer,
+                        value: curr?.kebersihanDebuFreezer,
                       ),
                       DetailText(
                         param: "Atribut Brand Lain",
-                        value: curr.brandLain,
+                        value: curr?.brandLain,
                       ),
                       DetailText(
                         param: "Stock Brand Lain",
-                        value: curr.stockBrandLain,
+                        value: curr?.stockBrandLain,
                       ),
                       DetailText(
                         param: "Produk Retur",
-                        value: curr.produkRetur,
+                        value: curr?.produkRetur,
                       ),
                       DetailText(
                         param: "Saran dan Kendala",
-                        value: curr.saranDanKendala,
+                        value: curr?.saranDanKendala,
                       ),
                     ])),
                     SliverGrid(
@@ -115,100 +116,101 @@ class SalesDetailView extends ConsumerWidget {
                       ),
                       delegate: SliverChildListDelegate.fixed(
                         [
-                          if (curr.pilihanToko == "Superhyper") ...[
+                          if (curr?.pilihanTokoId == 3) ...[
                             ImageSalesWidget(
-                              url: curr.fotoSelfie ?? "",
+                              url: curr?.fotoSelfie ??
+                                  "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Selfie Nama Toko",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoKulkasDariJauh ??
+                              url: curr?.fotoKulkasDariJauh ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dari Jauh",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoKulkasTertutup ??
+                              url: curr?.fotoKulkasTertutup ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dari Dekat",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoFreezerTwo ??
+                              url: curr?.fotoFreezerTwo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Satu",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoFreezerTwo ??
+                              url: curr?.fotoFreezerTwo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dua",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoFreezerThree ??
+                              url: curr?.fotoFreezerThree ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Tiga",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoFreezerIsland1 ??
+                              url: curr?.fotoFreezerIsland1 ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Island Satu",
                             ),
                             ImageSalesWidget(
-                              url: curr.fotoFreezerIsland2 ??
+                              url: curr?.fotoFreezerIsland2 ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Island Dua",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Island Tiga",
-                              url: curr.fotoFreezerIsland3 ??
+                              url: curr?.fotoFreezerIsland3 ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Bawah",
-                              url: curr.fotoFreezerBawah ??
+                              url: curr?.fotoFreezerBawah ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto PO",
-                              url: curr.fotoPo ??
+                              url: curr?.fotoPo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Peralatan",
-                              url: curr.fotoPeralatan ??
+                              url: curr?.fotoPeralatan ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto POP",
-                              url: curr.fotoPop ??
+                              url: curr?.fotoPop ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                           ] else ...[
                             ImageSalesWidget(
                               title: "Foto Selfie",
-                              url: curr.fotoSelfie ??
+                              url: curr?.fotoSelfie ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Dari Jauh",
-                              url: curr.fotoKulkasDariJauh ??
+                              url: curr?.fotoKulkasDariJauh ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Terbuka",
-                              url: curr.fotoKulkasTerbuka ??
+                              url: curr?.fotoKulkasTerbuka ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Tertutup",
-                              url: curr.fotoKulkasTertutup ??
+                              url: curr?.fotoKulkasTertutup ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto PO",
-                              url: curr.fotoPo ??
+                              url: curr?.fotoPo ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Freezer Bawah",
-                              url: curr.fotoFreezerBawah ??
+                              url: curr?.fotoFreezerBawah ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                           ],

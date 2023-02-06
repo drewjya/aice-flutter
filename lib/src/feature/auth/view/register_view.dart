@@ -1,12 +1,10 @@
 import 'package:aice/src/src.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RegisterView extends HookConsumerWidget {
-  /// TODO add your comment here
   const RegisterView({Key? key}) : super(key: key);
 
   static const routeName = '/registerView';
@@ -16,39 +14,16 @@ class RegisterView extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final usernameController = useTextEditingController();
-    ref.listen(authStateChangesProvider, (previous, AsyncValue<User?> next) {
+    final jenisAkun = useState<String?>(null);
+    ref.listen(authProvider, (previous, ProviderValue next) {
       next.when(
         data: (data) {
-          if (data != null) {
-            Navigator.pushReplacementNamed(context, MainView.routeName);
-          }
+          showToast(context, data.toString());
         },
-        error: (error, stackTrace) {},
+        error: (error) {
+          showToast(context, error.message);
+        },
         loading: () {},
-      );
-    });
-    ref.listen(authProvider, (previous, AsyncValue next) {
-      next.when(
-        data: (data) {
-          Navigator.pop(context);
-          Navigator.pushReplacementNamed(context, MainView.routeName);
-        },
-        error: (error, stackTrace) {
-          Navigator.pop(context);
-          if (error != "") {
-            dPrint(error.runtimeType);
-            if (error is FirebaseAuthException) {
-              showToast(context, (error).message ?? "");
-            }
-          }
-        },
-        loading: () {
-          showDialog(
-            context: context,
-            builder: (context) =>
-                const Center(child: CircularProgressIndicator()),
-          );
-        },
       );
     });
 
@@ -128,6 +103,25 @@ class RegisterView extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              SizedBox(
+                width: (100 / 1.3).width(context),
+                child: CustomDropdownButton<String>(
+                  value: jenisAkun.value,
+                  onChanged: (p0) => jenisAkun.value = p0,
+                  items: const ['SPG', 'MD'],
+                  toDropdownMenuItem: (p0) {
+                    return DropdownMenuItem(
+                      value: p0,
+                      child: Text(p0),
+                    );
+                  },
+                  title: "Jenis Pengguna",
+                  toName: (p0) {
+                    return p0 ?? '';
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
               Container(
                 width: (100 / 2).width(context),
                 height: 37,
@@ -142,10 +136,26 @@ class RegisterView extends HookConsumerWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    ref.read(authProvider.notifier).register(
+                    String? message;
+                    if (emailController.text.isEmpty) {
+                      message = "Harap mengisi email";
+                    } else if (passwordController.text.isEmpty) {
+                      message = "Harap mengisi password";
+                    } else if (usernameController.text.isEmpty) {
+                      message = "Harap mengisi nama";
+                    } else if (jenisAkun.value == null) {
+                      message = "Harap memilih jenis akun";
+                    }
+                    if (message != null) {
+                      showToast(context, message);
+                      return;
+                    }
+
+                    ref.read(authProvider.notifier).signUp(
                         email: emailController.text,
                         password: passwordController.text,
-                        userName: usernameController.text);
+                        name: usernameController.text,
+                        jenisAkun: jenisAkun.value ?? '');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,

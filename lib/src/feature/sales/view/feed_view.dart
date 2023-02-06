@@ -15,8 +15,11 @@ class FeedView extends StatelessWidget {
           ),
           width: 100.width(context),
           child: Consumer(builder: (context, ref, child) {
-            final userName = ref.watch(userDataProvider).asData?.value ?? "";
-            return CartWidget(userName: userName);
+            final auth = ref.watch(authProvider).asData?.value;
+            if (auth == null) {
+              return const SizedBox.shrink();
+            }
+            return CartWidget(auth: auth);
           }),
         ),
         Consumer(builder: (context, ref, child) {
@@ -85,13 +88,13 @@ class FeedView extends StatelessWidget {
                             namaToko: curr.namaToko,
                             kodeToko: curr.kodeToko,
                             isStart: index == 0,
-                            createdAt: formatDate(curr.tanggal),
+                            createdAt: curr.createdAt,
                           );
                         },
                       ),
                     );
                   },
-                  error: (error, stackTrace) {
+                  error: (error) {
                     return child!;
                   },
                   loading: () {

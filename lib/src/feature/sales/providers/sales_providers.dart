@@ -1,7 +1,7 @@
 import 'package:aice/src/src.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final salesHistoryTodayProvider =
+final oldSalesHistoryTodayProvider =
     StreamProvider<List<SalesHistoryModel>>((ref) async* {
   final db = ref.watch(databaseProvider);
   final now = DateTime.now();
@@ -28,7 +28,7 @@ final salesHistoryTodayProvider =
 
   return;
 });
-final salesHistoryLastWeekProvider =
+final oldSalesHistoryLastWeekProvider =
     StreamProvider<List<SalesHistoryModel>>((ref) async* {
   final db = ref.watch(databaseProvider);
   final now = DateTime.now();
