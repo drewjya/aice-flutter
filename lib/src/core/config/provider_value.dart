@@ -21,6 +21,7 @@ abstract class ProviderValue<T> {
       }
       return ProviderValue.error(err);
     } catch (e) {
+      dPrint(e);
       String message;
       try {
         final error = e as dynamic;

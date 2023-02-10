@@ -1,3 +1,4 @@
+import 'package:aice/src/feature/absent/widget/check_out_detail_form.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,16 +11,27 @@ class CheckOutView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final namaTokoController = useTextEditingController();
-    final kodeTokoController = useTextEditingController();
+    final kualitasBaikController = useTextEditingController();
+    final kualitasBurukController = useTextEditingController();
+    final papanHargaFreezer = useState<String?>(null);
+    final priceTagTg = useState<String?>(null);
+    final priceTagIsland = useState<String?>(null);
+    final statusPopPromo = useState<String?>(null);
+    final kelengkapanItem = useTextEditingController();
+    final kebersihanFreezer = useState<String?>(null);
+    final pilihanToko = useState<PilihanToko?>(null);
     final formKey = useMemoized(
       () => GlobalKey<FormState>(),
     );
+
     useEffect(() {
-      final val = ref.read(checkInAbsensiProvider).asData?.value;
-      namaTokoController.text = val?.namaToko ?? "";
-      kodeTokoController.text = val?.kodeToko ?? "";
+      final absensi = ref.watch(absensiProvider).asData?.value;
+      namaTokoController.text = absensi?.namaToko ?? '';
+      pilihanToko.value = PilihanToko.fromValue(absensi?.pilihanTokoId ?? 0);
+      dPrint(pilihanToko.value);
       return null;
-    }, [ref.watch(checkInAbsensiProvider)]);
+    }, [ref.watch(absensiProvider)]);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -35,10 +47,25 @@ class CheckOutView extends HookConsumerWidget {
             children: [
               Form(
                 key: formKey,
-                child: TokoForm.absensi(
-                    isEnabled: false,
-                    namaTokoController: namaTokoController,
-                    kodeTokoController: kodeTokoController),
+                  child: Column(
+                    children: [
+                      TokoForm.absensi(
+                        isEnabled: false,
+                        checkOut: true,
+                        pilihanToko: pilihanToko,
+                        namaTokoController: namaTokoController,
+                      ),
+                      CheckOutDetailForm(
+                          kualitasBaikController: kualitasBaikController,
+                          kualitasBurukController: kualitasBurukController,
+                          papanHargaFreezer: papanHargaFreezer,
+                          priceTagTg: priceTagTg,
+                          priceTagIsland: priceTagIsland,
+                          statusPopPromo: statusPopPromo,
+                          kelengkapanItem: kelengkapanItem,
+                          kebersihanFreezer: kebersihanFreezer)
+                    ],
+                  )
               ),
               ElevatedButton.icon(
                 onPressed: () {
@@ -51,28 +78,28 @@ class CheckOutView extends HookConsumerWidget {
               ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState?.validate() ?? false) {
-                      final listProdukReport =
-                          ref.watch(listProdukReportProvider);
-                      if (listProdukReport.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Mohon lakukan input produk")));
-                        return;
-                      }
-                      final checkInModel = CheckOutModel(
-                          listProduk: listProdukReport,
-                          namaToko: namaTokoController.text,
-                          kodeToko: kodeTokoController.text);
-                      ref
-                          .read(absentRepositoryProvider)
-                          .checkOut(checkInModel: checkInModel)
-                          .then((value) {
-                        if (value != null) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(value)));
-                        }
-                        Navigator.pop(context);
-                      });
+                      // final listProdukReport =
+                      //     ref.watch(listProdukReportProvider);
+                      // if (listProdukReport.isEmpty) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //       const SnackBar(
+                      //           content: Text("Mohon lakukan input produk")));
+                      //   return;
+                      // }
+                      // final checkInModel = CheckOutModel(
+                      //     listProduk: listProdukReport,
+                      //     namaToko: namaTokoController.text,
+                      //     kodeToko: kodeTokoController.text);
+                      // ref
+                      //     .read(absentRepositoryProvider)
+                      //     .checkOut(checkInModel: checkInModel)
+                      //     .then((value) {
+                      //   if (value != null) {
+                      //     ScaffoldMessenger.of(context)
+                      //         .showSnackBar(SnackBar(content: Text(value)));
+                      //   }
+                      //   Navigator.pop(context);
+                      // });
                     }
                   },
                   child: const Center(child: Text("Check Out"))),

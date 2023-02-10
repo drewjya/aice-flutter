@@ -1,14 +1,10 @@
 import 'dart:io';
 
-import 'package:aice/models/form_submit_model.dart';
-import 'package:aice/models/other_submit_model.dart';
-import 'package:aice/models/superhyper_submit_model.dart';
-import 'package:aice/net/flutterfire.dart';
+import 'package:aice/src/feature/sales/model/foto_sales_dto.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 class AddView extends HookConsumerWidget {
   const AddView({Key? key}) : super(key: key);
@@ -24,7 +20,7 @@ class AddView extends HookConsumerWidget {
     final jumlahItemTerdisplayController = useTextEditingController();
     final saranDanKendalaController = useTextEditingController();
     final productReturController = useTextEditingController();
-    final pilihanToko = useState<String?>(null);
+    final pilihanToko = useState<PilihanToko?>(null);
     final kualitasProduk = useState<String?>(null);
     final stickerFreezer = useState<String?>(null);
     final dividerSekat = useState<String?>(null);
@@ -66,6 +62,23 @@ class AddView extends HookConsumerWidget {
       () => GlobalKey<FormState>(),
     );
     final isLoading = useState(false);
+    ref.listen(salesFormProvider, (previous, ProviderValue next) {
+      next.maybeWhen(
+        orElse: () {},
+        data: (data) {
+          navigatorKey.currentState?.pop();
+        },
+        error: (error) {
+          isLoading.value = false;
+          showToast(context, error.message);
+          if (error.status == ApiFailure.unauthorized) {
+            ref.invalidate(authProvider);
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                LoginView.routeName, (route) => false);
+          }
+        },
+      );
+    });
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -172,7 +185,7 @@ class AddView extends HookConsumerWidget {
                 content: Form(
                   key: imageKey,
                   child: ImageForm(
-                    tipe: pilihanToko.value ?? "",
+                    tipe: pilihanToko.value ?? PilihanToko.alfamart,
                     fotoSelfie: fotoSelfie,
                     fotoKulkasJauh: fotoKulkasJauh,
                     fotoKulkasDekat: fotoKulkasDekat,
@@ -251,91 +264,111 @@ class AddView extends HookConsumerWidget {
                 child: const Icon(Icons.done),
                 onPressed: () {
                   if (imageKey.currentState?.validate() ?? false) {
-                    isLoading.value = true;
-                    const uuid = Uuid();
-                    final formVal = FormSubmitModel(
-                        id: uuid.v1(),
-                        storeName: namaTokoController.text,
+                    final salesDto = SalesDto(
+                        pilihanTokoId: pilihanToko.value?.value ?? 1,
+                        namaToko: namaTokoController.text,
                         kodeToko: kodeTokoController.text,
-                        jumlahPo: jumlahPOController.text,
+                        kualitasProduk: kualitasProduk.value ?? "",
+                        stickerFreezer: stickerFreezer.value ?? "",
+                        papanHarga: papanHarga.value ?? "",
+                        dividerKulkas: dividerSekat.value ?? '',
+                        labelHarga: labelHarga.value ?? "",
+                        woblerPromo: woblerPromo.value ?? "",
+                        spanduk: spanduk.value ?? "",
+                        brandLain:
+                            atributBrandLainYangMengambilSpaceAice.value ?? "",
+                        stockBrandLain:
+                            stockBrandLainYangMengambilSpaceAice.value ?? "",
+                        stockDibawahFreezer: stockDibawahFreezer.value ?? "",
+                        produkPromosi: produkPromosi.value ?? "",
+                        kebersihanBungaEs: kebersihanBungaEs.value ?? "",
+                        kepenuhanFreezerAtas:
+                            kepenuhanFreezerBagianAtas.value ?? "",
+                        kebersihanLemFreezer: bekasLemFreezer.value ?? "",
+                        kebersihanDebuFreezer: debuFreezer.value ?? "",
+                        posisiFreezer: posisiFreezer.value ?? "",
+                        jumlahPO: int.tryParse(jumlahPOController.text) ?? 0,
                         jumlahItemTerdisplay:
-                            jumlahItemTerdisplayController.text,
+                            int.tryParse(jumlahItemTerdisplayController.text) ??
+                                0,
                         saranDanKendala: saranDanKendalaController.text,
                         produkRetur: productReturController.text,
-                        pilihanToko: pilihanToko.value!,
-                        kualitasProduk: kualitasProduk.value!,
-                        kategoriFreezer: kategoriFreezer.value!,
-                        stickerFreezer: stickerFreezer.value!,
-                        papanHarga: papanHarga.value!,
-                        dividerKulkas: dividerSekat.value!,
-                        labelHarga: labelHarga.value!,
-                        woblerPromo: woblerPromo.value!,
-                        spanduk: spanduk.value!,
-                        kepenuhanFreezerAtas: kepenuhanFreezerBagianAtas.value!,
-                        debuFreezer: debuFreezer.value!,
-                        brandLain:
-                            atributBrandLainYangMengambilSpaceAice.value!,
-                        stockBrandLain:
-                            stockBrandLainYangMengambilSpaceAice.value!,
-                        bekasLemFreezer: bekasLemFreezer.value!,
-                        posisiFreezer: posisiFreezer.value!,
-                        stockDibawahFreezer: stockDibawahFreezer.value!,
-                        kebersihanBungaEs: kebersihanBungaEs.value!,
-                        produkPromosi: produkPromosi.value!);
-                    Future<bool> isAdd;
-                    if (pilihanToko.value == "Superhyper") {
-                      isAdd = addSuperHyperSale(
-                          superhyperSubmitModel: SuperhyperSubmitModel(
-                              pickedSelfie: fotoSelfie.value!,
-                              farFreezer: fotoKulkasJauh.value!,
-                              closeFreezer: fotoKulkasDekat.value!,
-                              freezerOne: fotoFreezerOne.value!,
-                              freezerTwo: fotoFreezerDua.value!,
-                              freezerThree: fotoFreezerTiga.value!,
-                              freezerIslandOne: freezerIsland1.value!,
-                              freezerIslandTwo: freezerIsland2.value!,
-                              freezerIslandThree: freezerIsland2.value!,
-                              freezerBawah: fotoFreezerBawah.value!,
-                              po: fotoPo.value!,
-                              fotoPop: fotoPop.value!,
-                              fotoPeralatan: fotoPeralatan.value!),
-                          formSubmitModel: formVal);
-                    } else {
-                      isAdd = addOtherSale(
-                          otherSubmitModel: OtherSubmitModel(
-                            pickedSelfie: fotoSelfie.value!,
-                            farFreezer: fotoKulkasJauh.value!,
-                            closeFreezer: fotoKulkasDekat.value!,
-                            openedFreezer: fotoKulkasTerbuka.value!,
-                            freezerBawah: fotoFreezerBawah.value!,
-                            po: fotoPo.value!,
-                          ),
-                          formSubmitModel: formVal);
+                        kategoriFreezer: kategoriFreezer.value ?? "",
+                        namaDistributor:
+                            ref.read(authProvider).asData?.value.name ?? "");
+                    List<FotoDto> fotoDto = [];
+                    if (fotoSelfie.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoSelfie",
+                          foto: fotoSelfie.value!));
                     }
-                    isAdd.then((value) {
-                      isLoading.value = false;
-                      if (value) {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, MainView.routeName, (route) => false);
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                            "Upload Gagal",
-                          ),
-                          backgroundColor: Colors.red,
-                        ));
-                      }
-                      return null;
-                    }).catchError((e) {
-                      isLoading.value = false;
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                          "Upload Gagal",
-                        ),
-                        backgroundColor: Colors.red,
-                      ));
-                    });
+                    if (fotoKulkasJauh.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoKulkasDariJauh",
+                          foto: fotoKulkasJauh.value!));
+                    }
+                    if (fotoKulkasDekat.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoKulkasTertutup",
+                          foto: fotoKulkasDekat.value!));
+                    }
+                    if (fotoKulkasTerbuka.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoKulkasTerbuka",
+                          foto: fotoKulkasTerbuka.value!));
+                    }
+                    if (fotoFreezerOne.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerOne",
+                          foto: fotoFreezerOne.value!));
+                    }
+                    if (fotoFreezerDua.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerTwo",
+                          foto: fotoFreezerDua.value!));
+                    }
+                    if (fotoFreezerTiga.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerThree",
+                          foto: fotoFreezerTiga.value!));
+                    }
+                    if (freezerIsland1.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerIsland1",
+                          foto: freezerIsland1.value!));
+                    }
+                    if (freezerIsland2.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerIsland2",
+                          foto: freezerIsland2.value!));
+                    }
+                    if (freezerIsland3.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerIsland3",
+                          foto: freezerIsland3.value!));
+                    }
+                    if (fotoFreezerBawah.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoFreezerBawah",
+                          foto: fotoFreezerBawah.value!));
+                    }
+                    if (fotoPo.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoPo", foto: fotoPo.value!));
+                    }
+                    if (fotoPop.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoPop", foto: fotoPop.value!));
+                    }
+                    if (fotoPeralatan.value != null) {
+                      fotoDto.add(FotoDto(
+                          keteranganFoto: "fotoPeralatan",
+                          foto: fotoPeralatan.value!));
+                    }
+                    ref
+                        .read(salesFormProvider.notifier)
+                        .postSales(sales: salesDto, fotoDto: fotoDto);
+                    isLoading.value = true;
                   }
                 },
               ),

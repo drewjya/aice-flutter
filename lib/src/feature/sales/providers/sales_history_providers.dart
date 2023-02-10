@@ -1,4 +1,3 @@
-import 'package:aice/src/feature/sales/model/sales_history_model.dart';
 import 'package:aice/src/src.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:aice/src/src.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +38,7 @@ class AbsensiView extends ConsumerWidget {
             children: [
               Column(
                 children: [
-                  // ref.watch(checkInAbsensiProvider).maybeWhen(
+                  // ref.watch(oldCheckInAbsensiProvider).maybeWhen(
                   //   data: (data) {
                   //     if (data == null) {
                   //       return const KeteranganAbsenWidget.other(
@@ -56,9 +55,9 @@ class AbsensiView extends ConsumerWidget {
                   // ),
                   ElevatedButton(
                     onPressed: () {
-                      if (ref.watch(checkInAbsensiProvider).asData?.value !=
+                      if (ref.watch(oldCheckInAbsensiProvider).asData?.value !=
                               null ||
-                          ref.watch(checkInAbsensiProvider).hasError) {
+                          ref.watch(oldCheckInAbsensiProvider).hasError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text("Sudah Melakukan Check In")));
@@ -75,7 +74,7 @@ class AbsensiView extends ConsumerWidget {
               ),
               Column(
                 children: [
-                  // ref.watch(checkOutAbsensiProvider).maybeWhen(
+                  // ref.watch(oldCheckOutAbsensiProvider).maybeWhen(
                   //   data: (data) {
                   //     if (data == null) {
                   //       return const KeteranganAbsenWidget.other(
@@ -92,16 +91,16 @@ class AbsensiView extends ConsumerWidget {
                   // ),
                   ElevatedButton(
                     onPressed: () {
-                      if (ref.watch(checkInAbsensiProvider).asData?.value ==
+                      if (ref.watch(oldCheckInAbsensiProvider).asData?.value ==
                           null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text("Belum Melakukan Check In")));
                         return;
                       }
-                      if (ref.watch(checkOutAbsensiProvider).asData?.value !=
+                      if (ref.watch(oldCheckOutAbsensiProvider).asData?.value !=
                               null ||
-                          ref.watch(checkInAbsensiProvider).hasError) {
+                          ref.watch(oldCheckInAbsensiProvider).hasError) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text("Sudah Melakukan Check Out")));
@@ -123,7 +122,7 @@ class AbsensiView extends ConsumerWidget {
 
 class KeteranganAbsenWidget extends StatelessWidget {
   final String tokoAbsen;
-  final Timestamp? waktuAbsen;
+  final String? waktuAbsen;
   const KeteranganAbsenWidget({
     Key? key,
     required this.tokoAbsen,
@@ -145,7 +144,7 @@ class KeteranganAbsenWidget extends StatelessWidget {
         Text(isOther ? "-" : tokoAbsen),
         Text(isOther
             ? tokoAbsen
-            : DateFormat("dd-MM-yyyy / HH:mm").format(waktuAbsen!.toDate())),
+            : formatDate(waktuAbsen ?? "")),
       ],
     );
   }

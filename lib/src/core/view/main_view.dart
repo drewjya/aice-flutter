@@ -21,48 +21,77 @@ class MainView extends HookConsumerWidget {
         orElse: () {},
         error: (error) {
           if (error.status == ApiFailure.unauthorized) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, LoginView.routeName, (route) => false);
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                LoginView.routeName, (route) => false);
           }
         },
       );
     });
     return Scaffold(
-      body: [
-        const FeedView(),
-        const HistoryView(),
-        const AbsensiView()
-      ][currIndex.value],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        elevation: 0,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_rounded),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Absensi',
-          ),
-        ],
-        currentIndex: currIndex.value,
-        onTap: (value) {
-          currIndex.changeValue(value);
+      body: ref.watch(authProvider).when(data: (data) {
+        if (data.jenisAkun == "SPG") {
+          return const FeedView();
+        }
+        return [
+          const FeedView(),
+          const HistoryView(),
+        ][currIndex.value];
+      }, error: (error) {
+        return null;
+      }, loading: () {
+        return null;
+      }),
+      bottomNavigationBar: ref.watch(authProvider).when(
+        data: (data) {
+          if (data.jenisAkun == "SPG") {
+            return null;
+          }
+          return BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            elevation: 0,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.format_list_bulleted_rounded),
+                label: 'History',
+              ),
+            ],
+            currentIndex: currIndex.value,
+            onTap: (value) {
+              currIndex.changeValue(value);
+            },
+            selectedItemColor: Colors.black,
+          );
         },
-        selectedItemColor: Colors.black,
+        error: (e) {
+          return null;
+        },
+        loading: () {
+          return null;
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(salesRepositoryProvider).getSalesHistoryToday();
-          // Navigator.pushNamed(context, AddView.routeName);
+      floatingActionButton: ref.watch(authProvider).when(
+        data: (data) {
+          if (data.jenisAkun == "SPG") {
+            return null;
+          }
+          return FloatingActionButton(
+            onPressed: () {
+              navigatorKey.currentState?.pushNamed(AddView.routeName);
+            },
+            backgroundColor: Colors.black,
+            child: const Icon(Icons.add),
+          );
         },
-        backgroundColor: Colors.black,
-        child: const Icon(Icons.add),
+        error: (error) {
+          return null;
+        },
+        loading: () {
+          return null;
+        },
       ),
     );
   }

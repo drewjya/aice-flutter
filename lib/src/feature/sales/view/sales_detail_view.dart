@@ -1,4 +1,3 @@
-import 'package:aice/src/feature/sales/providers/sales_detail_provider.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -116,101 +115,101 @@ class SalesDetailView extends ConsumerWidget {
                       ),
                       delegate: SliverChildListDelegate.fixed(
                         [
-                          if (curr?.pilihanTokoId == 3) ...[
+                          if (curr?.pilihanTokoId == 4) ...[
                             ImageSalesWidget(
-                              url: curr?.fotoSelfie ??
+                              url: ApiUrl.getImage(curr?.fotoSelfie) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Selfie Nama Toko",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoKulkasDariJauh ??
+                              url: ApiUrl.getImage(curr?.fotoKulkasDariJauh) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dari Jauh",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoKulkasTertutup ??
+                              url: ApiUrl.getImage(curr?.fotoKulkasTertutup) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dari Dekat",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoFreezerTwo ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerTwo) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Satu",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoFreezerTwo ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerTwo) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Dua",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoFreezerThree ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerThree) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Tiga",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoFreezerIsland1 ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerIsland1) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Island Satu",
                             ),
                             ImageSalesWidget(
-                              url: curr?.fotoFreezerIsland2 ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerIsland2) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                               title: "Foto Kulkas Island Dua",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Island Tiga",
-                              url: curr?.fotoFreezerIsland3 ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerIsland3) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Bawah",
-                              url: curr?.fotoFreezerBawah ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerBawah) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto PO",
-                              url: curr?.fotoPo ??
+                              url: ApiUrl.getImage(curr?.fotoPo) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Peralatan",
-                              url: curr?.fotoPeralatan ??
+                              url: ApiUrl.getImage(curr?.fotoPeralatan) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto POP",
-                              url: curr?.fotoPop ??
+                              url: ApiUrl.getImage(curr?.fotoPop) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                           ] else ...[
                             ImageSalesWidget(
                               title: "Foto Selfie",
-                              url: curr?.fotoSelfie ??
+                              url: ApiUrl.getImage(curr?.fotoSelfie) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Dari Jauh",
-                              url: curr?.fotoKulkasDariJauh ??
+                              url: ApiUrl.getImage(curr?.fotoKulkasDariJauh) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Terbuka",
-                              url: curr?.fotoKulkasTerbuka ??
+                              url: ApiUrl.getImage(curr?.fotoKulkasTerbuka) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Kulkas Tertutup",
-                              url: curr?.fotoKulkasTertutup ??
+                              url: ApiUrl.getImage(curr?.fotoKulkasTertutup) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto PO",
-                              url: curr?.fotoPo ??
+                              url: ApiUrl.getImage(curr?.fotoPo) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                             ImageSalesWidget(
                               title: "Foto Freezer Bawah",
-                              url: curr?.fotoFreezerBawah ??
+                              url: ApiUrl.getImage(curr?.fotoFreezerBawah) ??
                                   "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
                             ),
                           ],

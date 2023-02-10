@@ -2,6 +2,32 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+enum PilihanToko {
+  alfamart("Alfamart", 1),
+  alfamidi("Alfamidi", 2),
+  indomaret("Indomaret", 3),
+  superhyper("Superhyper", 4);
+
+  final String name;
+  final int value;
+  const PilihanToko(this.name, this.value);
+
+  factory PilihanToko.fromValue(int val) {
+    switch (val) {
+      case 1:
+        return PilihanToko.alfamart;
+      case 2:
+        return PilihanToko.alfamidi;
+      case 3:
+        return PilihanToko.indomaret;
+      case 4:
+        return PilihanToko.superhyper;
+      default:
+        return PilihanToko.alfamart;
+    }
+  }
+}
+
 class SalesDetail {
   final int id;
   final int userId;

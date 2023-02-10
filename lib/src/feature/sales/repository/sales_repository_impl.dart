@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:aice/src/feature/sales/model/sales_detail_model.dart';
+import 'dart:io';
+
 import 'package:aice/src/src.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 
 class SalesRepositoryImpl extends SalesRepository {
   final ApiRequest req;
@@ -48,6 +48,36 @@ class SalesRepositoryImpl extends SalesRepository {
       return res!;
     } catch (e) {
       dPrint(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> sendGambarSales(
+      {required int id, required String keterangan, required File foto}) async {
+    try {
+      final res = await req.sendFile(
+          file: foto,
+          id: id,
+          keteranganFoto: keterangan,
+          idParam: "transaksiId",
+          url: ApiUrl.postImageTransaksi);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SalesDetail> postSales({required SalesDto salesDto}) async {
+    try {
+      final res = await req.post(
+        url: ApiUrl.postTransaksi,
+        body: salesDto.toMap(),
+        fromJson: (p0) => SalesDetail.fromMap(p0),
+      );
+      return res!;
+    } catch (e) {
       rethrow;
     }
   }

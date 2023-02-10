@@ -37,7 +37,6 @@ class ImageSalesPicker extends HookWidget {
       } else {
         errorText.value = null;
       }
-      print(errorText.value);
       return errorText.value;
     }, builder: (field) {
       return Column(

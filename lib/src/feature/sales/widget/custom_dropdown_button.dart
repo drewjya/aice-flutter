@@ -35,12 +35,14 @@ class CustomDropdownButton<T> extends StatelessWidget {
             child: DropdownButtonFormField<T>(
               items: items.map((e) => toDropdownMenuItem(e)).toList(),
               onChanged: onChanged,
+              value: value,
               validator: (value) {
                 if (value == null || toName(value).isEmpty) {
                   return "$title tidak boleh kosong";
                 }
                 return null;
               },
+              
               isExpanded: true,
               decoration: const InputDecoration(
                   errorStyle: TextStyle(

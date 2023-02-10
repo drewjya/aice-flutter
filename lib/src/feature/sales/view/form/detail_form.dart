@@ -1,4 +1,4 @@
-import 'package:aice/src/feature/sales/widget/custom_dropdown_button.dart';
+import 'package:aice/src/feature/feature.dart';
 import 'package:flutter/material.dart';
 
 class DetailForm extends StatelessWidget {
@@ -31,7 +31,7 @@ class DetailForm extends StatelessWidget {
   final TextEditingController jumlahItemTerdisplayController;
   final TextEditingController saranDanKendalaController;
   final TextEditingController productReturController;
-  final ValueNotifier<String?> pilihanToko;
+  final ValueNotifier<PilihanToko?> pilihanToko;
   final ValueNotifier<String?> kualitasProduk;
   final ValueNotifier<String?> stickerFreezer;
   final ValueNotifier<String?> papanHarga;
@@ -53,21 +53,21 @@ class DetailForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomDropdownButton<String>(
+        CustomDropdownButton<PilihanToko>(
           value: pilihanToko.value,
           onChanged: (value) {
             pilihanToko.value = value;
           },
-          items: const ['Alfamart', 'Alfamidi', 'Indomaret', 'Superhyper'],
+          items: PilihanToko.values,
           toDropdownMenuItem: (value) {
             return DropdownMenuItem(
               value: value,
-              child: Text(value),
+              child: Text(value.name),
             );
           },
           title: "Pilihan Toko",
           toName: (value) {
-            return value ?? "";
+            return value?.name ?? "";
           },
         ),
         CustomDropdownButton<String>(

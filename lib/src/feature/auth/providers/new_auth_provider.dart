@@ -5,15 +5,17 @@ class AuthNotifier extends StateNotifier<ProviderValue<AuthModel>> {
   AuthNotifier(this.ref)
       : super(ProviderValue.error(
             ErrorValue(status: ApiFailure.init, message: ''))) {
-    getProfile();
+    getProfile(init: true);
   }
 
   final Ref ref;
   logIn({required String email, required String password}) async {
+    dPrint("data");
     state = const ProviderValue.loading();
     state = await ProviderValue.guard(() => ref
         .read(authRepositoryProvider)
         .logIn(email: email, password: password));
+    dPrint(state);
   }
 
   signUp(

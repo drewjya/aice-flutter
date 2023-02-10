@@ -22,7 +22,7 @@ class ImageForm extends StatelessWidget {
     required this.fotoPop,
     required this.fotoPeralatan, required this.fotoKulkasTerbuka,
   }) : super(key: key);
-  final String tipe;
+  final PilihanToko tipe;
   final ValueNotifier<File?> fotoSelfie;
   final ValueNotifier<File?> fotoKulkasJauh;
   final ValueNotifier<File?> fotoKulkasDekat;
@@ -47,7 +47,7 @@ class ImageForm extends StatelessWidget {
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         children: <Widget>[
-          if (tipe == "Superhyper") ...[
+          if (tipe == PilihanToko.superhyper ) ...[
             ImageSalesPicker(
                 title: "Foto Selfie Depan Nama Toko", file: fotoSelfie),
             ImageSalesPicker(title: "Foto Kulkas Jauh", file: fotoKulkasJauh),

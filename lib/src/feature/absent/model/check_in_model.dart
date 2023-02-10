@@ -1,28 +1,35 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CheckInModel {
   final String namaToko;
-  final String kodeToko;
-  final Timestamp waktuCheckIn;
-  Timestamp? timestamp;
-  CheckInModel({required this.namaToko, required this.kodeToko, this.timestamp})
-      : waktuCheckIn = timestamp ?? Timestamp.now();
+  final int pilihanTokoId;
+  CheckInModel({
+    required this.namaToko,
+    required this.pilihanTokoId,
+  });
+
+  CheckInModel copyWith({
+    String? namaToko,
+    int? pilihanTokoId,
+  }) {
+    return CheckInModel(
+      namaToko: namaToko ?? this.namaToko,
+      pilihanTokoId: pilihanTokoId ?? this.pilihanTokoId,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'namaToko': namaToko,
-      'kodeToko': kodeToko,
-      'waktuCheckIn': waktuCheckIn,
+      'pilihanTokoId': pilihanTokoId.toString(),
     };
   }
 
   factory CheckInModel.fromMap(Map<String, dynamic> map) {
     return CheckInModel(
       namaToko: map['namaToko'] as String,
-      kodeToko: map['kodeToko'] as String,
-      timestamp: map['waktuCheckIn'] as Timestamp,
+      pilihanTokoId: map['pilihanTokoId'] as int,
     );
   }
 
@@ -30,4 +37,18 @@ class CheckInModel {
 
   factory CheckInModel.fromJson(String source) =>
       CheckInModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() =>
+      'CheckInModel(namaToko: $namaToko, pilihanTokoId: $pilihanTokoId)';
+
+  @override
+  bool operator ==(covariant CheckInModel other) {
+    if (identical(this, other)) return true;
+
+    return other.namaToko == namaToko && other.pilihanTokoId == pilihanTokoId;
+  }
+
+  @override
+  int get hashCode => namaToko.hashCode ^ pilihanTokoId.hashCode;
 }

@@ -13,8 +13,11 @@ class LoginView extends HookConsumerWidget {
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isObscure = useState(true);
-    emailController.text = 'admin@aice.com';
-    passwordController.text = 'Admin123';
+    useEffect(() {
+      emailController.text = 'admin@aice.com';
+      passwordController.text = 'Admin123';
+      return null;
+    }, [""]);
 
     ref.listen(authProvider, (previous, ProviderValue next) {
       next.when(
@@ -28,7 +31,6 @@ class LoginView extends HookConsumerWidget {
         error: (error) {
           if (error.message.isNotEmpty) {
             showToast(context, error.message);
-            
           }
         },
         loading: () {

@@ -2,7 +2,7 @@ import 'package:aice/src/src.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-final checkInAbsensiProvider = StreamProvider<CheckInModel?>((ref) async* {
+final oldCheckInAbsensiProvider = StreamProvider<CheckInModel?>((ref) async* {
   final db = ref.watch(databaseProvider);
   if (db != null) {
     final auth = ref.watch(authStateChangesProvider).asData?.value?.uid;
@@ -26,7 +26,7 @@ final checkInAbsensiProvider = StreamProvider<CheckInModel?>((ref) async* {
   return;
 });
 
-final checkOutAbsensiProvider = StreamProvider<CheckOutModel?>((ref) async* {
+final oldCheckOutAbsensiProvider = StreamProvider<CheckOutModel?>((ref) async* {
   final db = ref.watch(databaseProvider);
   if (db != null) {
     final auth = ref.watch(authStateChangesProvider).asData?.value?.uid;
