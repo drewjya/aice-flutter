@@ -14,8 +14,16 @@ class LoginView extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final isObscure = useState(true);
     useEffect(() {
-      emailController.text = 'admin@aice.com';
+      //Admin SPG 1
+      emailController.text = 'aice@adminspg.com';
       passwordController.text = 'Admin123';
+      //Admin SPG 2
+      emailController.text = 'aice@adminspg2.com';
+      passwordController.text = 'Admin123';
+      //Admin MD 2
+      // emailController.text = 'aice@adminmd.com';
+      // passwordController.text = 'Admin123';
+     
       return null;
     }, [""]);
 

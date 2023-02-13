@@ -1,4 +1,6 @@
-import 'package:aice/src/feature/feature.dart';
+import 'dart:io';
+
+import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,8 +11,35 @@ class CheckInView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    ref.listen(inputAbsensiProvider, (previous, ProviderValue next) {
+      next.when(
+        data: (data) {
+          Navigator.pop(
+            context,
+          );
+        },
+        error: (error) {
+          if (error.message.isNotEmpty) {
+            showToast(context, error.message);
+            if (error.status == ApiFailure.unauthorized) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, LoginView.routeName, (route) => false);
+            }
+          }
+        },
+        loading: () {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) =>
+                const Center(child: CircularProgressIndicator()),
+          );
+        },
+      );
+    });
     final namaTokoController = useTextEditingController();
     final pilihanToko = useState<PilihanToko?>(null);
+    final file = useState<File?>(null);
     final formKey = useMemoized(
       () => GlobalKey<FormState>(),
     );
@@ -28,9 +57,14 @@ class CheckInView extends HookConsumerWidget {
           children: [
             Form(
               key: formKey,
-              child: TokoForm.absensi(
-                pilihanToko: pilihanToko,
-                namaTokoController: namaTokoController,
+              child: Column(
+                children: [
+                  TokoForm.absensi(
+                    pilihanToko: pilihanToko,
+                    namaTokoController: namaTokoController,
+                  ),
+                  ImageSalesPicker(file: file, title: "Foto Selfie")
+                ],
               ),
             ),
             ElevatedButton(
@@ -40,8 +74,8 @@ class CheckInView extends HookConsumerWidget {
                         namaToko: namaTokoController.text,
                         pilihanTokoId: pilihanToko.value?.value ?? 1);
                     ref
-                        .read(absentRepositoryProvider)
-                        .checkIn(checkInModel: checkInModel);
+                        .read(inputAbsensiProvider.notifier)
+                        .checkIn(checkInModel, file.value!);
 
                     Navigator.pop(context);
                   }

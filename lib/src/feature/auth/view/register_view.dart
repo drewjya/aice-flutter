@@ -18,12 +18,26 @@ class RegisterView extends HookConsumerWidget {
     ref.listen(authProvider, (previous, ProviderValue next) {
       next.when(
         data: (data) {
-          showToast(context, data.toString());
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MainView.routeName,
+            (route) => false,
+          );
         },
         error: (error) {
-          showToast(context, error.message);
+          Navigator.pop(context);
+          if (error.message.isNotEmpty) {
+            showToast(context, error.message);
+          }
         },
-        loading: () {},
+        loading: () {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) =>
+                const Center(child: CircularProgressIndicator()),
+          );
+        },
       );
     });
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-         navigatorKey: navigatorKey,
+        navigatorKey: navigatorKey,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -39,6 +38,8 @@ class MyApp extends StatelessWidget {
         title: 'AICE App',
         onGenerateRoute: (settings) {
           switch (settings.name) {
+            case AbsensiDetailView.routeName:
+              return GenRoute.routeDef(page: const AbsensiDetailView());
             case LoginView.routeName:
               return GenRoute.routeDef(page: const LoginView());
             case RegisterView.routeName:

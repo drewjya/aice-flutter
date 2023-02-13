@@ -1,63 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:aice/src/feature/absent/model/absensi_model.dart';
+
+import 'package:aice/src/feature/absent/model/absensi_detail_model.dart';
 import 'package:aice/src/src.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class AbsentRepositoryImpl extends AbsentRepository {
   final Ref ref;
   final ApiRequest req;
   AbsentRepositoryImpl({required this.ref, required this.req});
   @override
-  Future<AbsensiModel> checkIn({required CheckInModel checkInModel}) async {
+  Future checkIn({required CheckInModel checkInModel}) async {
     try {
       final res = await req.post(
         url: ApiUrl.postCheckIn,
         body: checkInModel.toMap(),
-        fromJson: (p0) => AbsensiModel.fromMap(p0),
+        fromJson: (p0) => p0,
       );
-      dPrint(res);
-      return res!;
+      return res;
     } catch (e) {
       rethrow;
-    }
-  
-  }
-
-  @override
-  Future<String?> checkOut({required CheckOutModel checkInModel}) async {
-    final uid = ref.read(firebaseAuthProvider).currentUser?.uid;
-    final userName = ref.watch(userDataProvider).asData?.value ?? "";
-    try {
-      if (ref.watch(oldCheckInAbsensiProvider).asData?.value == null) {
-        return "Belum Melakukan Check In";
-      }
-      if (ref.watch(oldCheckOutAbsensiProvider).asData?.value != null ||
-          ref.watch(oldCheckInAbsensiProvider).hasError) {
-        return "Sudah Melakukan Check Out";
-      }
-      final isRegistered = await ref
-          .read(databaseProvider)!
-          .collection("absensi")
-          .doc(uid)
-          .get();
-      final data = isRegistered.data()?["namaSPG"];
-      if (data == null) {
-        await ref
-            .read(databaseProvider)!
-            .collection("absensi")
-            .doc(uid)
-            .set({"namaSPG": userName});
-      }
-      await ref
-          .read(databaseProvider)!
-          .collection("absensi/$uid/checkOut")
-          .doc("${DateFormat("yyyyMMdd").format(DateTime.now())}|$uid")
-          .set(checkInModel.toMap());
-      return "Berhasil melakukan Check Out";
-    } on FirebaseException catch (e) {
-      return e.message;
     }
   }
 
@@ -67,6 +28,63 @@ class AbsentRepositoryImpl extends AbsentRepository {
       final res = await req.get(
         url: ApiUrl.getAbsensiToday,
         fromJson: (p0) => AbsensiModel.fromMap(p0),
+      );
+      dPrint(res);
+      return res!;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future postGambar({required FotoDto fotoDto, required int absensiId}) async {
+    try {
+      final res = await req.sendFile(
+          file: fotoDto.foto,
+          id: absensiId,
+          keteranganFoto: fotoDto.keteranganFoto,
+          idParam: "formAbsensiSpgId",
+          url: ApiUrl.postImageSpg);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future checkOut({required int absensiId}) async {
+    try {
+      final res = await req.post(
+        url: ApiUrl.postCheckOut,
+        body: {"absensiSpgId": absensiId.toString()},
+        fromJson: (p0) => p0,
+      );
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future postFormAbsensi({required CheckOutModel checkOutModel}) async {
+    try {
+      final res = await req.post(
+        url: ApiUrl.postFormAbsensi,
+        body: checkOutModel.toMap(),
+        fromJson: (p0) => p0,
+      );
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<AbsensiDetailModel> getAbsensiDetail() async {
+    try {
+      final res = await req.get(
+        url: ApiUrl.getAbsensiDetailToday,
+        fromJson: (p0) => AbsensiDetailModel.fromMap(p0),
       );
       dPrint(res);
       return res!;

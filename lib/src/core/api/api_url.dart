@@ -1,6 +1,6 @@
 class ApiUrl {
   static const _isTest = true;
-  static const _url = "192.168.48.66";
+  static const _url = "192.168.81.223";
   static const _baseUrl = _isTest ? 'http://$_url:8080/api' : "http://";
   static const _baseImageUrl =
       _isTest ? 'http://$_url:8080' : "http://";
@@ -21,6 +21,7 @@ class ApiUrl {
 
   //Absensi (Spg)
   static const getAbsensiToday = "$_baseUrl/spg/";
+  static const getAbsensiDetailToday = "$_baseUrl/spg/detail";
   static const postCheckIn = "$_baseUrl/spg/checkIn";
   static const postCheckOut = "$_baseUrl/spg/checkOut";
   static const postFormAbsensi = "$_baseUrl/spg/formAbsensi";

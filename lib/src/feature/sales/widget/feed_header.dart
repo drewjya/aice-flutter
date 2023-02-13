@@ -29,17 +29,20 @@ class FeedHeader extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: ref.watch(absensiProvider
-                      .select((value) => value.isLoading || value.hasError))
+                      .select((value) =>
+                      value.isLoading ||
+                      value.hasError ||
+                      value.asData?.value.waktuCheckIn != null))
                   ? null
                   : () {
-                      final absensiValue =
-                          ref.watch(absensiProvider).asData?.value;
-                      if (absensiValue?.waktuCheckIn != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Sudah Melakukan Check In")));
-                        return;
-                      }
+                      // final absensiValue =
+                      //     ref.watch(absensiProvider).asData?.value;
+                      // if (absensiValue?.waktuCheckIn != null) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //       const SnackBar(
+                      //           content: Text("Sudah Melakukan Check In")));
+                      //   return;
+                      // }
                       Navigator.pushNamed(context, CheckInView.routeName);
                     },
               child: const Text("Check In"),
@@ -70,7 +73,13 @@ class FeedHeader extends ConsumerWidget {
               },
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: ref.watch(absensiProvider.select((value) =>
+                      value.isLoading ||
+                      value.hasError ||
+                      value.asData?.value.waktuCheckIn == null ||
+                      value.asData?.value.waktuCheckOut != null))
+                  ? null
+                  : () {
                 final absensiValue = ref.watch(absensiProvider).asData?.value;
                 if (absensiValue?.waktuCheckIn == null) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

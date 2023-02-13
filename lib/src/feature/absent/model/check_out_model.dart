@@ -1,42 +1,83 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-
-import 'package:aice/src/feature/absent/model/produk_report_model.dart';
-
 class CheckOutModel {
-  final String namaToko;
-  final String kodeToko;
-  final List<ProdukReportModel> listProduk;
-  Timestamp? timestamp;
-  final Timestamp waktuCheckOut;
-  CheckOutModel(
-      {required this.namaToko,
-      required this.kodeToko,
-      required this.listProduk,
-      this.timestamp})
-      : waktuCheckOut = timestamp ?? Timestamp.now();
+  final int kualitasBaik;
+  final int kualitasRusak;
+  final String papanHargaFreezer;
+  final String priceTagTg;
+  final String priceTagIsland;
+  final String statusPopPromo;
+  final int kelengkapanItem;
+  final String kebersihanFreezer;
+  final String itemKosong;
+  final int absensiSpgId;
+  CheckOutModel({
+    required this.kualitasBaik,
+    required this.kualitasRusak,
+    required this.papanHargaFreezer,
+    required this.priceTagTg,
+    required this.priceTagIsland,
+    required this.statusPopPromo,
+    required this.kelengkapanItem,
+    required this.kebersihanFreezer,
+    required this.itemKosong,
+    required this.absensiSpgId,
+  });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'namaToko': namaToko,
-      'kodeToko': kodeToko,
-      'waktuCheckOut': waktuCheckOut,
-      'listProduk': listProduk.map((x) => x.toMap()).toList(),
+  CheckOutModel copyWith({
+    int? kualitasBaik,
+    int? kualitasRusak,
+    String? papanHargaFreezer,
+    String? priceTagTg,
+    String? priceTagIsland,
+    String? statusPopPromo,
+    int? kelengkapanItem,
+    String? kebersihanFreezer,
+    String? itemKosong,
+    int? absensiSpgId,
+  }) {
+    return CheckOutModel(
+      kualitasBaik: kualitasBaik ?? this.kualitasBaik,
+      kualitasRusak: kualitasRusak ?? this.kualitasRusak,
+      papanHargaFreezer: papanHargaFreezer ?? this.papanHargaFreezer,
+      priceTagTg: priceTagTg ?? this.priceTagTg,
+      priceTagIsland: priceTagIsland ?? this.priceTagIsland,
+      statusPopPromo: statusPopPromo ?? this.statusPopPromo,
+      kelengkapanItem: kelengkapanItem ?? this.kelengkapanItem,
+      kebersihanFreezer: kebersihanFreezer ?? this.kebersihanFreezer,
+      itemKosong: itemKosong ?? this.itemKosong,
+      absensiSpgId: absensiSpgId ?? this.absensiSpgId,
+    );
+  }
+
+  Map<String, String> toMap() {
+    return <String, String>{
+      'kualitasBaik': '$kualitasBaik',
+      'kualitasRusak': '$kualitasRusak',
+      'papanHargaFreezer': papanHargaFreezer,
+      'priceTagTg': priceTagTg,
+      'priceTagIsland': priceTagIsland,
+      'statusPopPromo': statusPopPromo,
+      'kelengkapanItem': '$kelengkapanItem',
+      'kebersihanFreezer': kebersihanFreezer,
+      'itemKosong': itemKosong,
+      'absensiSpgId': '$absensiSpgId',
     };
   }
 
   factory CheckOutModel.fromMap(Map<String, dynamic> map) {
     return CheckOutModel(
-      namaToko: map['namaToko'] as String,
-      kodeToko: map['kodeToko'] as String,
-      timestamp: map['waktuCheckOut'] as Timestamp,
-      listProduk: List<ProdukReportModel>.from(
-        (map['listProduk'] as List).map(
-          (x) => ProdukReportModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      kualitasBaik: map['kualitasBaik'] as int,
+      kualitasRusak: map['kualitasRusak'] as int,
+      papanHargaFreezer: map['papanHargaFreezer'] as String,
+      priceTagTg: map['priceTagTg'] as String,
+      priceTagIsland: map['priceTagIsland'] as String,
+      statusPopPromo: map['statusPopPromo'] as String,
+      kelengkapanItem: map['kelengkapanItem'] as int,
+      kebersihanFreezer: map['kebersihanFreezer'] as String,
+      itemKosong: map['itemKosong'] as String,
+      absensiSpgId: map['absensiSpgId'] as int,
     );
   }
 
@@ -47,24 +88,36 @@ class CheckOutModel {
 
   @override
   String toString() {
-    return 'CheckOutModel(namaToko: $namaToko, kodeToko: $kodeToko, waktuCheckOut: $waktuCheckOut, listProduk: $listProduk)';
+    return 'CheckOutModel(kualitasBaik: $kualitasBaik, kualitasRusak: $kualitasRusak, papanHargaFreezer: $papanHargaFreezer, priceTagTg: $priceTagTg, priceTagIsland: $priceTagIsland, statusPopPromo: $statusPopPromo, kelengkapanItem: $kelengkapanItem, kebersihanFreezer: $kebersihanFreezer, itemKosong: $itemKosong, absensiSpgId: $absensiSpgId)';
   }
 
   @override
   bool operator ==(covariant CheckOutModel other) {
     if (identical(this, other)) return true;
-
-    return other.namaToko == namaToko &&
-        other.kodeToko == kodeToko &&
-        other.waktuCheckOut == waktuCheckOut &&
-        listEquals(other.listProduk, listProduk);
+  
+    return other.kualitasBaik == kualitasBaik &&
+        other.kualitasRusak == kualitasRusak &&
+        other.papanHargaFreezer == papanHargaFreezer &&
+        other.priceTagTg == priceTagTg &&
+        other.priceTagIsland == priceTagIsland &&
+        other.statusPopPromo == statusPopPromo &&
+        other.kelengkapanItem == kelengkapanItem &&
+        other.kebersihanFreezer == kebersihanFreezer &&
+        other.itemKosong == itemKosong &&
+        other.absensiSpgId == absensiSpgId;
   }
 
   @override
   int get hashCode {
-    return namaToko.hashCode ^
-        kodeToko.hashCode ^
-        waktuCheckOut.hashCode ^
-        listProduk.hashCode;
+    return kualitasBaik.hashCode ^
+        kualitasRusak.hashCode ^
+        papanHargaFreezer.hashCode ^
+        priceTagTg.hashCode ^
+        priceTagIsland.hashCode ^
+        statusPopPromo.hashCode ^
+        kelengkapanItem.hashCode ^
+        kebersihanFreezer.hashCode ^
+        itemKosong.hashCode ^
+        absensiSpgId.hashCode;
   }
 }

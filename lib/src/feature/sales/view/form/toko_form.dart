@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class TokoForm extends StatelessWidget {
   final TextEditingController namaTokoController;
   final TextEditingController? kodeTokoController;
+  final TextEditingController? namaController;
   final ValueNotifier<PilihanToko?>? pilihanToko;
   final bool isEnabled;
 
   const TokoForm(
       {super.key,
       required this.namaTokoController,
+      this.namaController,
       this.isEnabled = true,
       this.pilihanToko,
       this.checkOut = false,
@@ -18,6 +20,7 @@ class TokoForm extends StatelessWidget {
   const TokoForm.absensi(
       {super.key,
       required this.namaTokoController,
+      this.namaController,
       this.isEnabled = true,
       required this.pilihanToko,
       this.checkOut = false,
@@ -53,6 +56,22 @@ class TokoForm extends StatelessWidget {
               return null;
             },
             decoration: const InputDecoration(labelText: 'Kode Toko'),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+        ],
+        if (namaController != null) ...[
+          TextFormField(
+            controller: namaController,
+            enabled: isEnabled,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Nama tidak boleh kosong";
+              }
+              return null;
+            },
+            decoration: const InputDecoration(labelText: 'Nama'),
           ),
           const SizedBox(
             height: 8,

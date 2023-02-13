@@ -1,4 +1,3 @@
-import 'package:aice/src/feature/sales/model/foto_sales_dto.dart';
 import 'package:aice/src/src.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

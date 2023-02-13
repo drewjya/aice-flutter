@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:aice/src/feature/absent/absent.dart';
+
 class ProdukReportModel {
   final String namaProduk;
   final String kodeProduk;
@@ -37,8 +39,11 @@ class ProdukReportModel {
   }
 
   factory ProdukReportModel.fromMap(Map<String, dynamic> map) {
+    final data = ProdukModel.produkList()
+        .where((element) => element.kodeProduk == map['kodeProduk'] as String)
+        .toList();
     return ProdukReportModel(
-      namaProduk: map['namaProduk'] as String,
+      namaProduk: data.isNotEmpty ? data[0].namaProduk : "-",
       kodeProduk: map['kodeProduk'] as String,
       jumlahProduk: map['jumlahProduk'] as int,
       harga: map['harga'] as int,

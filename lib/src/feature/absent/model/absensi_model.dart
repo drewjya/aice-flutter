@@ -8,6 +8,7 @@ class AbsensiModel {
   final String namaToko;
   final String? waktuCheckIn;
   final String? waktuCheckOut;
+  final String? fotoAbsensi;
   AbsensiModel({
     required this.id,
     required this.userId,
@@ -16,6 +17,7 @@ class AbsensiModel {
     required this.namaToko,
     this.waktuCheckIn,
     this.waktuCheckOut,
+      this.fotoAbsensi
   });
 
   AbsensiModel copyWith({
@@ -62,6 +64,7 @@ class AbsensiModel {
           map['waktuCheckIn'] != null ? map['waktuCheckIn'] as String : null,
       waktuCheckOut:
           map['waktuCheckOut'] != null ? map['waktuCheckOut'] as String : null,
+        fotoAbsensi: map['fotoAbsensi']
     );
   }
 
@@ -72,7 +75,7 @@ class AbsensiModel {
 
   @override
   String toString() {
-    return 'AbsensiModel(id: $id, userId: $userId, formAbsensiId: $formAbsensiId, pilihanTokoId: $pilihanTokoId, namaToko: $namaToko, waktuCheckIn: $waktuCheckIn, waktuCheckOut: $waktuCheckOut)';
+    return 'AbsensiModel(id: $id, userId: $userId, formAbsensiId: $formAbsensiId, pilihanTokoId: $pilihanTokoId, namaToko: $namaToko, waktuCheckIn: $waktuCheckIn, waktuCheckOut: $waktuCheckOut, fotoAbsensi: $fotoAbsensi)';
   }
 
   @override
