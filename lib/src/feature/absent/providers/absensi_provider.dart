@@ -10,9 +10,11 @@ class AbsensiNotifier extends StateNotifier<ProviderValue<AbsensiModel>> {
   final Ref ref;
 
   getAbsensi() async {
+    dPrint("INI ABSENSI");
     state = const ProviderValue.loading();
     state = await ProviderValue.guard(
         () => ref.read(absentRepositoryProvider).getAbsensiToday());
+    dPrint(state);
   }
 
   setState(ProviderValue<AbsensiModel> newState) {
@@ -37,6 +39,7 @@ class InputAbsensiNotifier extends StateNotifier<ProviderValue<void>> {
       await ref.read(absentRepositoryProvider).postGambar(
           fotoDto: FotoDto(keteranganFoto: "fotoSelfie", foto: fotoSelfie),
           absensiId: data!.id);
+      ref.read(absensiProvider.notifier).getAbsensi();
     }
     state = data;
   }
@@ -67,6 +70,27 @@ class InputAbsensiNotifier extends StateNotifier<ProviderValue<void>> {
         .read(absentRepositoryProvider)
         .postGambar(fotoDto: fotoDto, absensiId: id));
     return val;
+  }
+
+  sendProdukList({
+    required List<ProdukReportModel> produkReportModel,
+    required int formAbsensiId,
+    required int absensiSpgId,
+  }) async {
+    state = const ProviderValue.loading();
+    final val = await ProviderValue.guard(() => ref
+        .read(absentRepositoryProvider)
+        .postProdukPenjualan(
+            absensiSpgId: absensiSpgId,
+            produkPenjualan: produkReportModel,
+            formAbsensiId: formAbsensiId));
+    if (val.hasError) {
+      state = val;
+      return;
+    }
+    ref.invalidate(listProdukReportProvider);
+    ref.read(absensiDetailProvider.notifier).loadData();
+    state = val;
   }
 }
 

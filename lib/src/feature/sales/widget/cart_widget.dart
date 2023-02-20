@@ -197,19 +197,19 @@ class CartWidget extends StatelessWidget {
                                                               ElevatedButton(
                                                                   onPressed:
                                                                       () {
-                                                                    FirebaseHelper
-                                                                        .instance
-                                                                        .batchUpdate(
-                                                                            updateCollection: docID
-                                                                                .text,
-                                                                            newValue: value
-                                                                                .text,
-                                                                            currentValue: currValue
-                                                                                .text,
-                                                                            updateField: key
-                                                                                .text)
-                                                                        .then((value) =>
-                                                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.toString()))));
+                                                                    // FirebaseHelper
+                                                                    //     .instance
+                                                                    //     .batchUpdate(
+                                                                    //         updateCollection: docID
+                                                                    //             .text,
+                                                                    //         newValue: value
+                                                                    //             .text,
+                                                                    //         currentValue: currValue
+                                                                    //             .text,
+                                                                    //         updateField: key
+                                                                    //             .text)
+                                                                    //     .then((value) =>
+                                                                    //         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.toString()))));
                                                                   },
                                                                   child: const Text(
                                                                       "Submit"))

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aice/src/feature/absent/absent.dart';
+import 'package:aice/src/src.dart';
 import 'package:collection/collection.dart';
 
 class AbsensiDetailModel {
@@ -27,9 +27,15 @@ class AbsensiDetailModel {
   final String statusPopPromo;
   final String waktuCheckIn;
   final String waktuCheckOut;
+  final num latitude;
+  final num longitude;
+  final String promosiAktif;
   AbsensiDetailModel({
     required this.absensiId,
+    required this.promosiAktif,
     required this.formAbsensiId,
+    required this.latitude,
+    required this.longitude,
     required this.fotoDisplayProdukFreezer1,
     required this.fotoDisplayProdukFreezer2,
     required this.fotoDisplayProdukFreezer3,
@@ -77,9 +83,15 @@ class AbsensiDetailModel {
     String? statusPopPromo,
     String? waktuCheckIn,
     String? waktuCheckOut,
+      num? latitude,
+      num? longitude,
+      String? promosiAktif
   }) {
     return AbsensiDetailModel(
+      latitude: latitude ?? this.longitude,
+      longitude: longitude ?? this.latitude,
       absensiId: absensiId ?? this.absensiId,
+      promosiAktif: promosiAktif ?? this.promosiAktif,
       formAbsensiId: formAbsensiId ?? this.formAbsensiId,
       fotoDisplayProdukFreezer1:
           fotoDisplayProdukFreezer1 ?? this.fotoDisplayProdukFreezer1,
@@ -139,9 +151,13 @@ class AbsensiDetailModel {
   }
 
   factory AbsensiDetailModel.fromMap(Map<String, dynamic> map) {
+    dPrint(map["longitude"]);
     return AbsensiDetailModel(
+      promosiAktif: (map["promosiAktif"] as String?) ?? "-",
+      latitude: (map["latitude"] as num?) ?? 0.0,
+      longitude: (map["longitude"] as num?) ?? 0.0,
       absensiId: map['absensiId'].toInt() as int,
-      formAbsensiId: map['formAbsensiId'].toInt() as int,
+      formAbsensiId: (map['formAbsensiId'] as int?) ?? 0,
       fotoDisplayProdukFreezer1: map['fotoDisplayProdukFreezer1'] as String,
       fotoDisplayProdukFreezer2: map['fotoDisplayProdukFreezer2'] as String,
       fotoDisplayProdukFreezer3: map['fotoDisplayProdukFreezer3'] as String,

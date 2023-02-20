@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CheckInView extends HookConsumerWidget {
@@ -68,16 +69,29 @@ class CheckInView extends HookConsumerWidget {
               ),
             ),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  final location = await Geolocator.checkPermission();
+                  dPrint(location);
+                  if (location != LocationPermission.whileInUse ||
+                      location != LocationPermission.always) {
+                    await Geolocator.requestPermission();
+                  }
+
+                  final latlocation = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.best,
+                  );
                   if (formKey.currentState?.validate() ?? false) {
                     final checkInModel = CheckInModel(
                         namaToko: namaTokoController.text,
+                        latitude: latlocation.latitude,
+                        longitude: latlocation.longitude,
                         pilihanTokoId: pilihanToko.value?.value ?? 1);
                     ref
                         .read(inputAbsensiProvider.notifier)
                         .checkIn(checkInModel, file.value!);
-
-                    Navigator.pop(context);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 child: const Center(child: Text("Check In"))),

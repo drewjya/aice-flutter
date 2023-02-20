@@ -23,13 +23,15 @@ class LoginView extends HookConsumerWidget {
       //Admin MD 2
       // emailController.text = 'aice@adminmd.com';
       // passwordController.text = 'Admin123';
-     
+
       return null;
     }, [""]);
+    final isLoading = useState(false);
 
     ref.listen(authProvider, (previous, ProviderValue next) {
       next.when(
         data: (data) {
+          isLoading.value = false;
           Navigator.pushNamedAndRemoveUntil(
             context,
             MainView.routeName,
@@ -37,17 +39,13 @@ class LoginView extends HookConsumerWidget {
           );
         },
         error: (error) {
+          isLoading.value = false;
           if (error.message.isNotEmpty) {
             showToast(context, error.message);
           }
         },
         loading: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) =>
-                const Center(child: CircularProgressIndicator()),
-          );
+          isLoading.value = true;
         },
       );
     });
@@ -117,26 +115,36 @@ class LoginView extends HookConsumerWidget {
                   height: 37,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6.0),
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 62, 182, 226),
-                        Color.fromARGB(255, 148, 231, 225),
-                      ],
-                    ),
+                    gradient: isLoading.value
+                        ? null
+                        : const LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 62, 182, 226),
+                              Color.fromARGB(255, 148, 231, 225),
+                            ],
+                          ),
                   ),
                   child: ElevatedButton(
-                    onPressed: () async {
-                      ref.read(authProvider.notifier).logIn(
-                          email: emailController.text,
-                          password: passwordController.text);
-                    },
+                    onPressed: isLoading.value
+                        ? null
+                        : () async {
+                            ref.read(authProvider.notifier).logIn(
+                                email: emailController.text,
+                                password: passwordController.text);
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6)),
                     ),
-                    child: const Text("Login"),
+                    child: isLoading.value
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text("Login"),
                   ),
                 ),
                 const SizedBox(height: 10),

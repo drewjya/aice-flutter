@@ -1,3 +1,4 @@
+export 'absensi_detail_model.dart';
 export 'absensi_model.dart';
 export 'check_in_model.dart';
 export 'check_out_model.dart';

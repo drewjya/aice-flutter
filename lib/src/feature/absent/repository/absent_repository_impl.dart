@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:aice/src/feature/absent/model/absensi_detail_model.dart';
+
 import 'package:aice/src/src.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -80,14 +80,37 @@ class AbsentRepositoryImpl extends AbsentRepository {
   }
   
   @override
-  Future<AbsensiDetailModel> getAbsensiDetail() async {
+  Future<AbsensiDetailModel> getAbsensiDetail(int id) async {
     try {
       final res = await req.get(
-        url: ApiUrl.getAbsensiDetailToday,
+        url: "${ApiUrl.getAbsensiDetailToday}/$id",
         fromJson: (p0) => AbsensiDetailModel.fromMap(p0),
       );
       dPrint(res);
       return res!;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future postProdukPenjualan({
+    required List<ProdukReportModel> produkPenjualan,
+    required int formAbsensiId,
+    required int absensiSpgId,
+  }) async {
+    try {
+      final res = await req.post(
+        url: ApiUrl.postListProdukPenjualan,
+        encode: true,
+        body: {
+          "listProdukPenjualan": produkPenjualan.map((e) => e.toMap()).toList(),
+          "formAbsensiSpgId": formAbsensiId,
+          "absensiSpgId":absensiSpgId
+        },
+        fromJson: (p0) => p0,
+      );
+      return res;
     } catch (e) {
       rethrow;
     }

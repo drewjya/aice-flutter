@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class CheckOutDetailForm extends StatelessWidget {
   final TextEditingController kualitasBaikController;
   final TextEditingController kualitasBurukController;
+  final TextEditingController promosiDetail;
   final ValueNotifier<String?> papanHargaFreezer;
   final ValueNotifier<String?> priceTagTg;
   final ValueNotifier<String?> priceTagIsland;
@@ -15,6 +16,7 @@ class CheckOutDetailForm extends StatelessWidget {
   const CheckOutDetailForm({
     Key? key,
     required this.kualitasBaikController,
+    required this.promosiDetail,
     required this.kualitasBurukController,
     required this.papanHargaFreezer,
     required this.priceTagTg,
@@ -141,6 +143,20 @@ class CheckOutDetailForm extends StatelessWidget {
               toName: (value) {
                 return value ?? "";
               },
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            TextFormField(
+              controller: promosiDetail,
+              // keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Promosi Detail tidak boleh kosong";
+                }
+                return null;
+              },
+              decoration: const InputDecoration(labelText: 'Promosi Aktif'),
             ),
             const SizedBox(
               height: 8,

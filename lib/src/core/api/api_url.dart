@@ -1,6 +1,6 @@
 class ApiUrl {
   static const _isTest = true;
-  static const _url = "192.168.81.223";
+  static const _url = "192.168.151.183";
   static const _baseUrl = _isTest ? 'http://$_url:8080/api' : "http://";
   static const _baseImageUrl =
       _isTest ? 'http://$_url:8080' : "http://";

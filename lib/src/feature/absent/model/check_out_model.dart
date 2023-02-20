@@ -12,9 +12,11 @@ class CheckOutModel {
   final String kebersihanFreezer;
   final String itemKosong;
   final int absensiSpgId;
+  final String promosiAktif;
   CheckOutModel({
     required this.kualitasBaik,
     required this.kualitasRusak,
+    required this.promosiAktif,
     required this.papanHargaFreezer,
     required this.priceTagTg,
     required this.priceTagIsland,
@@ -35,6 +37,7 @@ class CheckOutModel {
     int? kelengkapanItem,
     String? kebersihanFreezer,
     String? itemKosong,
+    String? promosiAktif,
     int? absensiSpgId,
   }) {
     return CheckOutModel(
@@ -43,6 +46,7 @@ class CheckOutModel {
       papanHargaFreezer: papanHargaFreezer ?? this.papanHargaFreezer,
       priceTagTg: priceTagTg ?? this.priceTagTg,
       priceTagIsland: priceTagIsland ?? this.priceTagIsland,
+      promosiAktif: promosiAktif ?? this.promosiAktif,
       statusPopPromo: statusPopPromo ?? this.statusPopPromo,
       kelengkapanItem: kelengkapanItem ?? this.kelengkapanItem,
       kebersihanFreezer: kebersihanFreezer ?? this.kebersihanFreezer,
@@ -63,29 +67,14 @@ class CheckOutModel {
       'kebersihanFreezer': kebersihanFreezer,
       'itemKosong': itemKosong,
       'absensiSpgId': '$absensiSpgId',
+      'promosiAktif': promosiAktif,
     };
   }
 
-  factory CheckOutModel.fromMap(Map<String, dynamic> map) {
-    return CheckOutModel(
-      kualitasBaik: map['kualitasBaik'] as int,
-      kualitasRusak: map['kualitasRusak'] as int,
-      papanHargaFreezer: map['papanHargaFreezer'] as String,
-      priceTagTg: map['priceTagTg'] as String,
-      priceTagIsland: map['priceTagIsland'] as String,
-      statusPopPromo: map['statusPopPromo'] as String,
-      kelengkapanItem: map['kelengkapanItem'] as int,
-      kebersihanFreezer: map['kebersihanFreezer'] as String,
-      itemKosong: map['itemKosong'] as String,
-      absensiSpgId: map['absensiSpgId'] as int,
-    );
-  }
 
   String toJson() => json.encode(toMap());
 
-  factory CheckOutModel.fromJson(String source) =>
-      CheckOutModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
+  
   @override
   String toString() {
     return 'CheckOutModel(kualitasBaik: $kualitasBaik, kualitasRusak: $kualitasRusak, papanHargaFreezer: $papanHargaFreezer, priceTagTg: $priceTagTg, priceTagIsland: $priceTagIsland, statusPopPromo: $statusPopPromo, kelengkapanItem: $kelengkapanItem, kebersihanFreezer: $kebersihanFreezer, itemKosong: $itemKosong, absensiSpgId: $absensiSpgId)';
@@ -94,7 +83,7 @@ class CheckOutModel {
   @override
   bool operator ==(covariant CheckOutModel other) {
     if (identical(this, other)) return true;
-  
+
     return other.kualitasBaik == kualitasBaik &&
         other.kualitasRusak == kualitasRusak &&
         other.papanHargaFreezer == papanHargaFreezer &&

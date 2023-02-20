@@ -15,10 +15,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.4.0
-  cloud_firestore: ^4.2.0
-  firebase_storage: ^11.0.8
-  firebase_auth: ^4.2.1
   uuid: ^3.0.7
   hooks_riverpod: ^2.1.1
   flutter_hooks: ^0.18.5+1
@@ -30,6 +26,8 @@ dependencies:
   http: ^0.13.5
   meta: ^1.8.0
   shared_preferences: ^2.0.17
+  geolocator: ^9.0.2
+
 
 dev_dependencies:
   flutter_test:

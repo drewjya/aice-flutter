@@ -13,19 +13,15 @@ class ApiRequest {
       throw ErrorValue(
           status: ApiFailure.unauthorized, message: "Tidak ada token");
     }
-    dPrint(Uri.parse(url));
     final req =
         await http.get(Uri.parse(url), headers: {'Authorization': token});
 
     final status = req.statusCode;
-    dPrint(req.body);
-    dPrint(status <= 300);
 
     final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
     if (status <= 300) {
       return dto.data;
     }
-    dPrint("Masuk");
     throw dto.error!;
   }
 
@@ -36,19 +32,13 @@ class ApiRequest {
       throw ErrorValue(
           status: ApiFailure.unauthorized, message: "Tidak ada token");
     }
-    dPrint(Uri.parse(url));
     final req =
         await http.get(Uri.parse(url), headers: {'Authorization': token});
-
     final status = req.statusCode;
-    dPrint(req.body);
-    dPrint(status <= 300);
-
     final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
     if (status <= 300) {
       return dto.dataList;
     }
-    dPrint("Masuk");
     throw dto.error!;
   }
 
@@ -56,6 +46,7 @@ class ApiRequest {
       {required String url,
       required Map<String, dynamic>? body,
       required TFromJsonBuilder<T> fromJson,
+      bool encode = false,
       bool auth = false}) async {
     try {
       final token = SharedPrefs.getSession();
@@ -63,10 +54,25 @@ class ApiRequest {
         throw ErrorValue(
             status: ApiFailure.unauthorized, message: "Session Sudah Habis");
       }
-      final req = await http.post(Uri.parse(url),
-          headers: {'Authorization': token ?? ""}, body: body);
+      Object? val;
+      if (encode) {
+        val = jsonEncode(body);
+      } else {
+        val = body;
+      }
+      var header = {
+        'Authorization': token ?? "",
+      };
+      if (encode) {
+        header["content-type"] = "application/json";
+      }
+      final req = await http.post(
+        Uri.parse(url),
+        headers: header,
+        body: val,
+      );
       final status = req.statusCode;
-      dPrint(req.body);
+
       final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
       if (status <= 300) {
         return dto.data;

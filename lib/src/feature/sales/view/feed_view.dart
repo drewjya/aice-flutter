@@ -24,52 +24,58 @@ class FeedView extends HookConsumerWidget {
         },
       );
     });
-    return Column(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(
-            top: 5.height(context),
+    return Container(
+      color: Colors.white,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(
+              top: 5.height(context),
+            ),
+            width: 100.width(context),
+            child: Consumer(builder: (context, ref, child) {
+              final auth = ref.watch(authProvider).asData?.value;
+              if (auth == null) {
+                return const SizedBox.shrink();
+              }
+              return CartWidget(auth: auth);
+            }),
           ),
-          width: 100.width(context),
-          child: Consumer(builder: (context, ref, child) {
-            final auth = ref.watch(authProvider).asData?.value;
-            if (auth == null) {
-              return const SizedBox.shrink();
-            }
-            return CartWidget(auth: auth);
-          }),
-        ),
-        Expanded(child: Consumer(
-          builder: (context, ref, child) {
-            return ref.watch(authProvider).when(
-              data: (data) {
-                if (data.jenisAkun == "SPG") {
-                  return Column(
-                    children: const [
-                      FeedTitle.spg(),
-                      FeedHeader.spg(),
-                      Expanded(child: FeedBody.spg()),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    children: const [
-                      FeedTitle(),
-                      Expanded(child: FeedBody()),
-                    ],
-                  );
-                }
-              },
-              error: (error) {
-                return Text(error.message);
-              },
-              loading: () {
-                return const CircularProgressIndicator();
-              },
-            );
-          },
-        )),
-      ],
+          Expanded(child: Consumer(
+            builder: (context, ref, child) {
+              return ref.watch(authProvider).when(
+                data: (data) {
+                  if (data.jenisAkun == "SPG") {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        FeedTitle.spg(),
+                        FeedHeader.spg(),
+                        FeedBody.spg()
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: const [
+                        FeedTitle(),
+                        Expanded(child: FeedBody()),
+                      ],
+                    );
+                  }
+                },
+                error: (error) {
+                  return Text(error.message);
+                },
+                loading: () {
+                  return const CircularProgressIndicator();
+                },
+              );
+            },
+          )),
+        ],
+      ),
     );
   }
 }

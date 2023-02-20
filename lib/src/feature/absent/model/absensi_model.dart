@@ -9,16 +9,17 @@ class AbsensiModel {
   final String? waktuCheckIn;
   final String? waktuCheckOut;
   final String? fotoAbsensi;
-  AbsensiModel({
-    required this.id,
-    required this.userId,
-    this.formAbsensiId,
-    required this.pilihanTokoId,
-    required this.namaToko,
-    this.waktuCheckIn,
-    this.waktuCheckOut,
-      this.fotoAbsensi
-  });
+  final bool statusListProduk;
+  AbsensiModel(
+      {required this.id,
+      required this.userId,
+      this.formAbsensiId,
+      required this.pilihanTokoId,
+      required this.namaToko,
+      this.waktuCheckIn,
+      this.waktuCheckOut,
+      required this.statusListProduk,
+      this.fotoAbsensi});
 
   AbsensiModel copyWith({
     int? id,
@@ -28,9 +29,11 @@ class AbsensiModel {
     String? namaToko,
     String? waktuCheckIn,
     String? waktuCheckOut,
+    bool? statusListProduk,
   }) {
     return AbsensiModel(
       id: id ?? this.id,
+      statusListProduk: statusListProduk ?? this.statusListProduk,
       userId: userId ?? this.userId,
       formAbsensiId: formAbsensiId ?? this.formAbsensiId,
       pilihanTokoId: pilihanTokoId ?? this.pilihanTokoId,
@@ -54,18 +57,19 @@ class AbsensiModel {
 
   factory AbsensiModel.fromMap(Map<String, dynamic> map) {
     return AbsensiModel(
-      id: map['id'] as int,
-      userId: map['userId'] as int,
-      formAbsensiId:
-          map['formAbsensiId'] != null ? map['formAbsensiId'] as int : null,
-      pilihanTokoId: map['pilihanTokoId'] as int,
-      namaToko: map['namaToko'] as String,
-      waktuCheckIn:
-          map['waktuCheckIn'] != null ? map['waktuCheckIn'] as String : null,
-      waktuCheckOut:
-          map['waktuCheckOut'] != null ? map['waktuCheckOut'] as String : null,
-        fotoAbsensi: map['fotoAbsensi']
-    );
+        statusListProduk: map["statusListProduk"] as bool,
+        id: map['id'] as int,
+        userId: map['userId'] as int,
+        formAbsensiId:
+            map['formAbsensiId'] != null ? map['formAbsensiId'] as int : null,
+        pilihanTokoId: map['pilihanTokoId'] as int,
+        namaToko: map['namaToko'] as String,
+        waktuCheckIn:
+            map['waktuCheckIn'] != null ? map['waktuCheckIn'] as String : null,
+        waktuCheckOut: map['waktuCheckOut'] != null
+            ? map['waktuCheckOut'] as String
+            : null,
+        fotoAbsensi: map['fotoAbsensi']);
   }
 
   String toJson() => json.encode(toMap());

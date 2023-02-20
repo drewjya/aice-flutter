@@ -1,43 +1,12 @@
 import 'package:aice/src/src.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final ApiRequest req;
   final Ref ref;
   AuthRepositoryImpl(this.ref, this.req);
-  @override
-  Future<void> register(
-      {required String email,
-      required String password,
-      required String userName}) async {
-    try {
-      final authResult = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-      await ref
-          .read(databaseProvider)!
-          .collection('users')
-          .doc(authResult.user?.uid)
-          .set({
-        'username': userName,
-        'email': email,
-      });
-    } on FirebaseAuthException {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<void> signIn({required String email, required String password}) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } catch (e) {
-      rethrow;
-    }
-  }
+  
 
   @override
   Future<AuthModel> logIn(

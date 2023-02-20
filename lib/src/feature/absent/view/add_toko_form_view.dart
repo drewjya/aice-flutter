@@ -14,9 +14,14 @@ class AddTokoFormView extends HookConsumerWidget {
     final produkModel = useState<ProdukModel?>(null);
     final hargaProdukController = useTextEditingController();
     final qtyProdukController = useTextEditingController();
+    final qtyFocusNode = useFocusNode();
+    final priceFocusNode = useFocusNode();
     final formKey = useMemoized(
       () => GlobalKey<FormState>(),
     );
+    final listProdukReport = ref.watch(listProdukReportProvider);
+    produkModelList.removeWhere((element) =>
+        listProdukReport.map((e) => e.kodeProduk).contains(element.kodeProduk));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -30,18 +35,43 @@ class AddTokoFormView extends HookConsumerWidget {
         child: Form(
           key: formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomDropdownButton<ProdukModel>(
-                value: produkModel.value,
-                onChanged: (value) => produkModel.value = value,
-                items: produkModelList,
-                toDropdownMenuItem: (produk) => DropdownMenuItem(
-                    value: produk, child: Text(produk.namaProduk)),
-                title: "Pilih Nama Produk",
-                toName: (produk) => produk?.namaProduk ?? "",
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Pilih Nama Produk",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {
+                      showDropdownSearchDialog<ProdukModel>(
+                          item: produkModelList,
+                          onTap: (val) {
+                            produkModel.value = val;
+                          },
+                          toName: (val) {
+                            return val.namaProduk;
+                          },
+                          context: context);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        produkModel.value?.namaProduk ?? "",
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               TextFormField(
                 controller: hargaProdukController,
+                focusNode: priceFocusNode,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Harga Produk tidak boleh kosong";
@@ -57,6 +87,7 @@ class AddTokoFormView extends HookConsumerWidget {
               ),
               TextFormField(
                 controller: qtyProdukController,
+                focusNode: qtyFocusNode,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Jumlah Produk tidak boleh kosong";
@@ -68,6 +99,8 @@ class AddTokoFormView extends HookConsumerWidget {
               ),
               ElevatedButton(
                   onPressed: () {
+                    priceFocusNode.unfocus();
+                    qtyFocusNode.unfocus();
                     final a = formKey.currentState?.validate() ?? false;
                     if (a) {
                       final produkReportModel = ProdukReportModel(

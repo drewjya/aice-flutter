@@ -7,10 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SharedPrefs.init();
-  // await Firebase.initializeApp(
-  //   name: "AICE Suppliers",
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+
   runApp(
     const ProviderScope(
       child: MyApp(),

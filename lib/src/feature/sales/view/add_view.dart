@@ -66,6 +66,7 @@ class AddView extends HookConsumerWidget {
         orElse: () {},
         data: (data) {
           navigatorKey.currentState?.pop();
+          
         },
         error: (error) {
           isLoading.value = false;

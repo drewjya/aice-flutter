@@ -16,6 +16,7 @@ class CheckOutView extends HookConsumerWidget {
     final namaController = useTextEditingController();
     final kualitasBaikController = useTextEditingController();
     final kualitasBurukController = useTextEditingController();
+    final promosiDetail = useTextEditingController();
     final itemKosong = useTextEditingController();
     final papanHargaFreezer = useState<String?>(null);
     final priceTagTg = useState<String?>(null);
@@ -62,14 +63,7 @@ class CheckOutView extends HookConsumerWidget {
             }
           }
         },
-        loading: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) =>
-                const Center(child: CircularProgressIndicator()),
-          );
-        },
+        loading: () {},
       );
     });
     return Scaffold(
@@ -144,6 +138,7 @@ class CheckOutView extends HookConsumerWidget {
                   key: detailKey,
                   child: CheckOutDetailForm(
                       itemKosong: itemKosong,
+                      promosiDetail: promosiDetail,
                       kualitasBaikController: kualitasBaikController,
                       kualitasBurukController: kualitasBurukController,
                       papanHargaFreezer: papanHargaFreezer,
@@ -244,6 +239,7 @@ class CheckOutView extends HookConsumerWidget {
                         kelengkapanItem:
                             int.tryParse(kelengkapanItem.text) ?? 0,
                         kebersihanFreezer: kebersihanFreezer.value ?? "",
+                        promosiAktif: promosiDetail.text,
                         itemKosong: itemKosong.text,
                         absensiSpgId: id);
                     List<FotoDto> fotos = [];
@@ -297,56 +293,74 @@ class CheckOutView extends HookConsumerWidget {
 }
 
 class ListProdukReport extends ConsumerWidget {
+  final AbsensiDetailModel absen;
   const ListProdukReport({
     Key? key,
+    required this.absen,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
     final listProdukReport = ref.watch(listProdukReportProvider);
-    return SizedBox(
-      height:
-          36 * (listProdukReport.length < 12 ? listProdukReport.length : 12) +
-              30,
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: listProdukReport.length,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                final item = listProdukReport[index];
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(item.namaProduk),
-                        const Spacer(),
-                        Text(
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: listProdukReport.length,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final item = listProdukReport[index];
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(item.namaProduk),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
                           "${item.harga} (x${item.jumlahProduk})",
                         ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        Text(item.totalPrice.toString())
-                      ],
-                    )
-                  ],
-                );
-              },
-            ),
+                      ),
+                      Text(item.totalPrice.toString())
+                    ],
+                  )
+                ],
+              );
+            },
           ),
-          Row(
-            children: [
-              const Text("Total Harga"),
-              const Spacer(),
-              Text(listProdukReport.getTotal().toString()),
-            ],
-          )
-        ],
-      ),
+        ),
+        Row(
+          children: [
+            const Text("Total Harga"),
+            const Spacer(),
+            Text(listProdukReport.getTotal().toString()),
+          ],
+        ),
+        ElevatedButton(
+            onPressed: () {
+              if (listProdukReport.isEmpty) {
+                showToast(context, "Harap Mengisi List Produk Terlebih Dahulu");
+                return;
+              }
+              ref.read(inputAbsensiProvider.notifier).sendProdukList(
+                  absensiSpgId: absen.absensiId,
+                  produkReportModel: listProdukReport,
+                  formAbsensiId: absen.formAbsensiId);
+            },
+            child: Center(
+              child: ref.watch(inputAbsensiProvider).isLoading
+                  ? Container(
+                      constraints: const BoxConstraints(
+                        maxWidth: 20,
+                        maxHeight: 20,
+                      ),
+                      child: const CircularProgressIndicator())
+                  : const Text("Submit"),
+            )),
+      ],
     );
   }
 }
