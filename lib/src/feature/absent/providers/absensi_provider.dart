@@ -90,6 +90,7 @@ class InputAbsensiNotifier extends StateNotifier<ProviderValue<void>> {
     }
     ref.invalidate(listProdukReportProvider);
     ref.read(absensiDetailProvider.notifier).loadData();
+    ref.read(absensiProvider.notifier).getAbsensi();
     state = val;
   }
 }
