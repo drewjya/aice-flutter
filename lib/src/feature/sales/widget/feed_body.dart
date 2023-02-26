@@ -111,17 +111,14 @@ class FeedBody extends StatelessWidget {
                           ),
                           Flexible(
                             child: SizedBox(
-                              height: 200,
                               child: Column(
                                 children: [
-                                  Flexible(
-                                    child: Text(
-                                      data.namaToko,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                  Text(
+                                    data.namaToko,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                   const SizedBox(

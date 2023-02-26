@@ -70,15 +70,12 @@ class FeedHeader extends ConsumerWidget {
                 ? null
                 : () async {
                     final location = await Geolocator.checkPermission();
-                    dPrint(location);
                     if (!(location == LocationPermission.whileInUse ||
                         location == LocationPermission.always)) {
-                      final data = await Geolocator.requestPermission();
-                      dPrint(data);
+                      await Geolocator.requestPermission();
+                      
                       return;
                     }
-                    final type = await Geolocator.getLocationAccuracy();
-                    dPrint(type);
                     if (context.mounted) {
                       Navigator.pushNamed(context, CheckInView.routeName);
                     }

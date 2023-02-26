@@ -2,8 +2,9 @@ class ApiUrl {
   static const _isTest = true;
   static const _url = "www.aiceapps.com";
   static const _baseUrl = _isTest ? 'https://$_url/api' : "http://";
-  static const _baseImageUrl =
-      _isTest ? 'https://$_url' : "http://";
+  static const _baseImageUrl = _isTest ? 'https://$_url' : "http://";
+
+  static const version = "1.5";
 
   //Auth
   static const login = '$_baseUrl/auth/login';
@@ -27,6 +28,9 @@ class ApiUrl {
   static const postFormAbsensi = "$_baseUrl/spg/formAbsensi";
   static const postListProdukPenjualan = "$_baseUrl/spg/addProdukPenjualan";
   static const postImageSpg = "$_baseUrl/image/spg";
+
+  //Versi
+  static const versi = "$_baseUrl/version/";
 
   static String? getImage(String? path) =>
       path != null ? '$_baseImageUrl/images$path' : null;
