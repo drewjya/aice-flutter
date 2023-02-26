@@ -16,6 +16,7 @@ class VersionRepositoryImpl implements VersionRepository {
     try {
       final res = await req.get(
         url: ApiUrl.versi,
+        isToken: false,
         fromJson: (p0) => VersionModel.fromMap(p0),
       );
       return res!;

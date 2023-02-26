@@ -7,14 +7,22 @@ import 'package:http/http.dart' as http;
 
 class ApiRequest {
   Future<T?> get<T>(
-      {required String url, required TFromJsonBuilder<T> fromJson}) async {
+      {required String url,
+      required TFromJsonBuilder<T> fromJson,
+      bool isToken = true}) async {
     final token = SharedPrefs.getSession();
-    if (token == null) {
+    Map<String, String> headers = {};
+    if (token == null && isToken) {
       throw ErrorValue(
           status: ApiFailure.unauthorized, message: "Tidak ada token");
     }
+
+    if (token != null) {
+      headers = {'Authorization': token};
+    }
+
     final req =
-        await http.get(Uri.parse(url), headers: {'Authorization': token});
+        await http.get(Uri.parse(url), headers: headers);
 
     final status = req.statusCode;
 
