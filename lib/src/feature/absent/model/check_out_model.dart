@@ -2,8 +2,8 @@
 import 'dart:convert';
 
 class CheckOutModel {
-  final int kualitasBaik;
-  final int kualitasRusak;
+  final String kualitasProduk;
+  final String produkRusak;
   final String papanHargaFreezer;
   final String priceTagTg;
   final String priceTagIsland;
@@ -13,10 +13,10 @@ class CheckOutModel {
   final String itemKosong;
   final int absensiSpgId;
   final String promosiAktif;
+  final String periodePromo;
   CheckOutModel({
-    required this.kualitasBaik,
-    required this.kualitasRusak,
-    required this.promosiAktif,
+    required this.kualitasProduk,
+    required this.produkRusak,
     required this.papanHargaFreezer,
     required this.priceTagTg,
     required this.priceTagIsland,
@@ -25,11 +25,14 @@ class CheckOutModel {
     required this.kebersihanFreezer,
     required this.itemKosong,
     required this.absensiSpgId,
+    required this.promosiAktif,
+    required this.periodePromo,
   });
+ 
 
   CheckOutModel copyWith({
-    int? kualitasBaik,
-    int? kualitasRusak,
+    String? kualitasProduk,
+    String? produkRusak,
     String? papanHargaFreezer,
     String? priceTagTg,
     String? priceTagIsland,
@@ -37,55 +40,76 @@ class CheckOutModel {
     int? kelengkapanItem,
     String? kebersihanFreezer,
     String? itemKosong,
-    String? promosiAktif,
     int? absensiSpgId,
+    String? promosiAktif,
+    String? periodePromo,
   }) {
     return CheckOutModel(
-      kualitasBaik: kualitasBaik ?? this.kualitasBaik,
-      kualitasRusak: kualitasRusak ?? this.kualitasRusak,
+      kualitasProduk: kualitasProduk ?? this.kualitasProduk,
+      produkRusak: produkRusak ?? this.produkRusak,
       papanHargaFreezer: papanHargaFreezer ?? this.papanHargaFreezer,
       priceTagTg: priceTagTg ?? this.priceTagTg,
       priceTagIsland: priceTagIsland ?? this.priceTagIsland,
-      promosiAktif: promosiAktif ?? this.promosiAktif,
       statusPopPromo: statusPopPromo ?? this.statusPopPromo,
       kelengkapanItem: kelengkapanItem ?? this.kelengkapanItem,
       kebersihanFreezer: kebersihanFreezer ?? this.kebersihanFreezer,
       itemKosong: itemKosong ?? this.itemKosong,
       absensiSpgId: absensiSpgId ?? this.absensiSpgId,
+      promosiAktif: promosiAktif ?? this.promosiAktif,
+      periodePromo: periodePromo ?? this.periodePromo,
     );
   }
 
-  Map<String, String> toMap() {
-    return <String, String>{
-      'kualitasBaik': '$kualitasBaik',
-      'kualitasRusak': '$kualitasRusak',
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'kualitasProduk': kualitasProduk,
+      'produkRusak': produkRusak,
       'papanHargaFreezer': papanHargaFreezer,
       'priceTagTg': priceTagTg,
       'priceTagIsland': priceTagIsland,
       'statusPopPromo': statusPopPromo,
-      'kelengkapanItem': '$kelengkapanItem',
+      'kelengkapanItem': "$kelengkapanItem",
       'kebersihanFreezer': kebersihanFreezer,
       'itemKosong': itemKosong,
-      'absensiSpgId': '$absensiSpgId',
+      'absensiSpgId': "$absensiSpgId",
       'promosiAktif': promosiAktif,
+      'periodePromo': periodePromo,
     };
   }
 
+  factory CheckOutModel.fromMap(Map<String, dynamic> map) {
+    return CheckOutModel(
+      kualitasProduk: map['kualitasProduk'] as String,
+      produkRusak: map['produkRusak'] as String,
+      papanHargaFreezer: map['papanHargaFreezer'] as String,
+      priceTagTg: map['priceTagTg'] as String,
+      priceTagIsland: map['priceTagIsland'] as String,
+      statusPopPromo: map['statusPopPromo'] as String,
+      kelengkapanItem: map['kelengkapanItem'] as int,
+      kebersihanFreezer: map['kebersihanFreezer'] as String,
+      itemKosong: map['itemKosong'] as String,
+      absensiSpgId: map['absensiSpgId'] as int,
+      promosiAktif: map['promosiAktif'] as String,
+      periodePromo: map['periodePromo'] as String,
+    );
+  }
 
   String toJson() => json.encode(toMap());
 
-  
+  factory CheckOutModel.fromJson(String source) =>
+      CheckOutModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
   @override
   String toString() {
-    return 'CheckOutModel(kualitasBaik: $kualitasBaik, kualitasRusak: $kualitasRusak, papanHargaFreezer: $papanHargaFreezer, priceTagTg: $priceTagTg, priceTagIsland: $priceTagIsland, statusPopPromo: $statusPopPromo, kelengkapanItem: $kelengkapanItem, kebersihanFreezer: $kebersihanFreezer, itemKosong: $itemKosong, absensiSpgId: $absensiSpgId)';
+    return 'CheckOutModel(kualitasProduk: $kualitasProduk, produkRusak: $produkRusak, papanHargaFreezer: $papanHargaFreezer, priceTagTg: $priceTagTg, priceTagIsland: $priceTagIsland, statusPopPromo: $statusPopPromo, kelengkapanItem: $kelengkapanItem, kebersihanFreezer: $kebersihanFreezer, itemKosong: $itemKosong, absensiSpgId: $absensiSpgId, promosiAktif: $promosiAktif, periodePromo: $periodePromo)';
   }
 
   @override
   bool operator ==(covariant CheckOutModel other) {
     if (identical(this, other)) return true;
-
-    return other.kualitasBaik == kualitasBaik &&
-        other.kualitasRusak == kualitasRusak &&
+  
+    return other.kualitasProduk == kualitasProduk &&
+        other.produkRusak == produkRusak &&
         other.papanHargaFreezer == papanHargaFreezer &&
         other.priceTagTg == priceTagTg &&
         other.priceTagIsland == priceTagIsland &&
@@ -93,13 +117,15 @@ class CheckOutModel {
         other.kelengkapanItem == kelengkapanItem &&
         other.kebersihanFreezer == kebersihanFreezer &&
         other.itemKosong == itemKosong &&
-        other.absensiSpgId == absensiSpgId;
+        other.absensiSpgId == absensiSpgId &&
+        other.promosiAktif == promosiAktif &&
+        other.periodePromo == periodePromo;
   }
 
   @override
   int get hashCode {
-    return kualitasBaik.hashCode ^
-        kualitasRusak.hashCode ^
+    return kualitasProduk.hashCode ^
+        produkRusak.hashCode ^
         papanHargaFreezer.hashCode ^
         priceTagTg.hashCode ^
         priceTagIsland.hashCode ^
@@ -107,6 +133,8 @@ class CheckOutModel {
         kelengkapanItem.hashCode ^
         kebersihanFreezer.hashCode ^
         itemKosong.hashCode ^
-        absensiSpgId.hashCode;
+        absensiSpgId.hashCode ^
+        promosiAktif.hashCode ^
+        periodePromo.hashCode;
   }
 }

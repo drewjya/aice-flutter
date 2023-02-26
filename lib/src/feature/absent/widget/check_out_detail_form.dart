@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CheckOutDetailForm extends StatelessWidget {
-  final TextEditingController kualitasBaikController;
-  final TextEditingController kualitasBurukController;
+  final ValueNotifier<String?> kualitasProduk;
+  final TextEditingController produkRusak;
+  final ValueNotifier<String> periodePromo;
   final TextEditingController promosiDetail;
   final ValueNotifier<String?> papanHargaFreezer;
   final ValueNotifier<String?> priceTagTg;
@@ -13,11 +15,13 @@ class CheckOutDetailForm extends StatelessWidget {
   final TextEditingController kelengkapanItem;
   final TextEditingController itemKosong;
   final ValueNotifier<String?> kebersihanFreezer;
+
   const CheckOutDetailForm({
     Key? key,
-    required this.kualitasBaikController,
+    required this.kualitasProduk,
+    required this.produkRusak,
+    required this.periodePromo,
     required this.promosiDetail,
-    required this.kualitasBurukController,
     required this.papanHargaFreezer,
     required this.priceTagTg,
     required this.priceTagIsland,
@@ -35,30 +39,29 @@ class CheckOutDetailForm extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextFormField(
-              controller: kualitasBaikController,
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Kualitas Baik tidak boleh kosong";
-                }
-                return null;
-              },
-              decoration: const InputDecoration(labelText: 'Kualitas Baik'),
+            CustomDropdownButton<String>(
+              value: kualitasProduk.value,
+              onChanged: (p0) => kualitasProduk.value = p0,
+              items: const ["Baik", "Buruk"],
+              toDropdownMenuItem: (p0) => DropdownMenuItem(
+                value: p0,
+                child: Text(p0),
+              ),
+              title: "Kualitas Produk",
+              toName: (p0) => p0 ?? "",
             ),
             const SizedBox(
               height: 8,
             ),
             TextFormField(
-              controller: kualitasBurukController,
-              keyboardType: TextInputType.number,
+              controller: produkRusak,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Kualitas Buruk tidak boleh kosong";
+                  return "Produk Rusak tidak boleh kosong";
                 }
                 return null;
               },
-              decoration: const InputDecoration(labelText: 'Kualitas Buruk'),
+              decoration: const InputDecoration(labelText: 'Produk Rusak'),
             ),
             const SizedBox(
               height: 8,
@@ -95,7 +98,7 @@ class CheckOutDetailForm extends StatelessWidget {
                   child: Text(value),
                 );
               },
-              title: "Price Tag TG",
+              title: "Price Tag Aice",
               toName: (value) {
                 return value ?? "";
               },
@@ -157,6 +160,26 @@ class CheckOutDetailForm extends StatelessWidget {
                 return null;
               },
               decoration: const InputDecoration(labelText: 'Promosi Aktif'),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            OnPressedField(
+              title: "Periode Promo",
+              value: periodePromo.value,
+              onPressed: () async {
+                final dateRange = await showDateRangePicker(
+                  context: context,
+                  firstDate: DateTime(DateTime.now().year - 1),
+                  lastDate: DateTime(2099),
+                );
+                final format = DateFormat("dd-MM-yyyy");
+                if (dateRange == null) {
+                  return;
+                }
+                periodePromo.value =
+                    "${format.format(dateRange.start)} s/d ${format.format(dateRange.end)}";
+              },
             ),
             const SizedBox(
               height: 8,

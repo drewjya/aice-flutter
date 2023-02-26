@@ -1,9 +1,9 @@
 class ApiUrl {
   static const _isTest = true;
-  static const _url = "139.177.190.46";
-  static const _baseUrl = _isTest ? 'http://$_url:8080/api' : "http://";
+  static const _url = "www.aiceapps.com";
+  static const _baseUrl = _isTest ? 'https://$_url/api' : "http://";
   static const _baseImageUrl =
-      _isTest ? 'http://$_url:8080' : "http://";
+      _isTest ? 'https://$_url' : "http://";
 
   //Auth
   static const login = '$_baseUrl/auth/login';

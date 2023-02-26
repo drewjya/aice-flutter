@@ -42,12 +42,12 @@ class AbsensiFormDetail extends ConsumerWidget {
         formatDate(absensi.waktuCheckOut),
         style: style,
       ),
-      "Kualitas Baik": Text(
-        "${absensi.kualitasBaik}",
+      "Kualitas Produk": Text(
+        absensi.kualitasProduk,
         style: style,
       ),
-      "Kualitas Buruk": Text(
-        "${absensi.kualitasRusak}",
+      "Produk Rusak": Text(
+        absensi.produkRusak,
         style: style,
       ),
       "Item Kosong": Text(
@@ -58,7 +58,7 @@ class AbsensiFormDetail extends ConsumerWidget {
         absensi.papanHargaFreezer,
         style: style,
       ),
-      "Price Tag TG": Text(
+      "Price Tag Aice": Text(
         absensi.priceTagTg,
         style: style,
       ),
@@ -72,6 +72,10 @@ class AbsensiFormDetail extends ConsumerWidget {
       ),
       "Promo Aktif": Text(
         absensi.promosiAktif,
+        style: style,
+      ),
+      "Periode Promo Aktif": Text(
+        absensi.periodePromo,
         style: style,
       ),
       "Kelengkapan Item": Text(

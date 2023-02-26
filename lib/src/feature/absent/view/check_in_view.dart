@@ -12,9 +12,13 @@ class CheckInView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final isLoading = useState(false);
     ref.listen(inputAbsensiProvider, (previous, ProviderValue next) {
       next.when(
         data: (data) {
+          Navigator.pop(
+            context,
+          );
           Navigator.pop(
             context,
           );
@@ -23,6 +27,9 @@ class CheckInView extends HookConsumerWidget {
           if (error.message.isNotEmpty) {
             showToast(context, error.message);
             if (error.status == ApiFailure.unauthorized) {
+              Navigator.pop(
+                context,
+              );
               Navigator.pushNamedAndRemoveUntil(
                   context, LoginView.routeName, (route) => false);
             }
@@ -69,32 +76,43 @@ class CheckInView extends HookConsumerWidget {
               ),
             ),
             ElevatedButton(
-                onPressed: () async {
-                  final location = await Geolocator.checkPermission();
-                  dPrint(location);
-                  if (location != LocationPermission.whileInUse ||
-                      location != LocationPermission.always) {
-                    await Geolocator.requestPermission();
-                  }
+                onPressed: isLoading.value
+                    ? null
+                    : () async {
+                        final location = await Geolocator.checkPermission();
+                        dPrint(location);
+                        if (location != LocationPermission.whileInUse ||
+                            location != LocationPermission.always) {
+                          await Geolocator.requestPermission();
+                        }
+                        isLoading.value = true;
 
-                  final latlocation = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best,
-                  );
-                  if (formKey.currentState?.validate() ?? false) {
-                    final checkInModel = CheckInModel(
-                        namaToko: namaTokoController.text,
-                        latitude: latlocation.latitude,
-                        longitude: latlocation.longitude,
-                        pilihanTokoId: pilihanToko.value?.value ?? 1);
-                    ref
-                        .read(inputAbsensiProvider.notifier)
-                        .checkIn(checkInModel, file.value!);
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  }
-                },
-                child: const Center(child: Text("Check In"))),
+                        final latlocation = await Geolocator.getCurrentPosition(
+                          desiredAccuracy: LocationAccuracy.best,
+                        );
+                        if (formKey.currentState?.validate() ?? false) {
+                          final checkInModel = CheckInModel(
+                              namaToko: namaTokoController.text,
+                              latitude: latlocation.latitude,
+                              longitude: latlocation.longitude,
+                              pilihanTokoId: pilihanToko.value?.value ?? 1);
+                        
+                          await ref
+                              .read(inputAbsensiProvider.notifier)
+                              .checkIn(checkInModel, file.value!);
+                        }
+                        isLoading.value = false;
+                      },
+                child: Center(
+                    child: isLoading.value
+                        ? Container(
+                            constraints: const BoxConstraints(
+                                maxHeight: 20, maxWidth: 20),
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text("Check In"))),
           ],
         ),
       ),

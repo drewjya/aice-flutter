@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
@@ -42,7 +43,6 @@ class CustomDropdownButton<T> extends StatelessWidget {
                 }
                 return null;
               },
-              
               isExpanded: true,
               decoration: const InputDecoration(
                   errorStyle: TextStyle(
@@ -61,6 +61,68 @@ class CustomDropdownButton<T> extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class OnPressedField extends StatelessWidget {
+  const OnPressedField({
+    Key? key,
+    this.padding = true,
+    required this.title,
+    this.onPressed,
+    required this.value,
+  }) : super(key: key);
+  final bool padding;
+  final String title;
+  final String value;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FormField<String>(
+      validator: (data) {
+        if (value.isEmpty) {
+          return "$title tidak boleh kosong";
+        }
+        return null;
+      },
+      builder: (validate) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: padding ? 10 : 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              ),
+              TextButton(
+                onPressed: onPressed,
+                style: TextButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    shape: const RoundedRectangleBorder(
+                        side: BorderSide(
+                      color: Colors.black,
+                    ))),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(value),
+                ),
+              ),
+              if (validate.errorText != null ||
+                  (validate.errorText?.isNotEmpty ?? false))
+                Text(
+                  validate.errorText ?? "",
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                )
+            ],
+          ),
+        );
+      },
     );
   }
 }

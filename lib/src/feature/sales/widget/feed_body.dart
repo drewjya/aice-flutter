@@ -81,87 +81,98 @@ class FeedBody extends StatelessWidget {
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(12)),
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 37,
-                        ),
-                        Container(
-                          width: 102,
-                          height: 110,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                ApiUrl.getImage(
-                                        data.fotoAbsensi?.isEmpty ?? true
-                                            ? null
-                                            : data.fotoAbsensi) ??
-                                    "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 37,
+                          ),
+                          Container(
+                            width: 102,
+                            height: 110,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  ApiUrl.getImage(
+                                          data.fotoAbsensi?.isEmpty ?? true
+                                              ? null
+                                              : data.fotoAbsensi) ??
+                                      "https://play-lh.googleusercontent.com/ZyWNGIfzUyoajtFcD7NhMksHEZh37f-MkHVGr5Yfefa-IX7yj9SMfI82Z7a2wpdKCA=w240-h480-rw",
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 37,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              data.namaToko,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            Text(
-                              PilihanToko.values
-                                  .firstWhere((element) =>
-                                      element.value == data.pilihanTokoId)
-                                  .name,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 32,
-                            ),
-                            Text(
-                              status ? "Sudah Absen" : "Belum Absen",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          data.statusListProduk ? Icons.check : Icons.close,
-                          color:
-                              data.statusListProduk ? Colors.green : Colors.red,
-                        ),
-                        const Text(
-                          "Produk Penjualan",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                          const SizedBox(
+                            width: 37,
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                          Flexible(
+                            child: SizedBox(
+                              height: 200,
+                              child: Column(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      data.namaToko,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  Text(
+                                    PilihanToko.values
+                                        .firstWhere((element) =>
+                                            element.value == data.pilihanTokoId)
+                                        .name,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+                                  Text(
+                                    status ? "Sudah Absen" : "Belum Absen",
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            data.statusListProduk ? Icons.check : Icons.close,
+                            color: data.statusListProduk
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                          const Text(
+                            "Produk Penjualan",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

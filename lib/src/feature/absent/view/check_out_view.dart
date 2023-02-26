@@ -14,10 +14,11 @@ class CheckOutView extends HookConsumerWidget {
     final currentStep = useState(0);
     final namaTokoController = useTextEditingController();
     final namaController = useTextEditingController();
-    final kualitasBaikController = useTextEditingController();
-    final kualitasBurukController = useTextEditingController();
+    final kualitasProduk = useState<String?>(null);
+    final produkRusak = useTextEditingController();
     final promosiDetail = useTextEditingController();
     final itemKosong = useTextEditingController();
+    final periodePromo = useState("");
     final papanHargaFreezer = useState<String?>(null);
     final priceTagTg = useState<String?>(null);
     final priceTagIsland = useState<String?>(null);
@@ -139,9 +140,10 @@ class CheckOutView extends HookConsumerWidget {
                   child: CheckOutDetailForm(
                       itemKosong: itemKosong,
                       promosiDetail: promosiDetail,
-                      kualitasBaikController: kualitasBaikController,
-                      kualitasBurukController: kualitasBurukController,
+                      kualitasProduk: kualitasProduk,
+                      produkRusak: produkRusak,
                       papanHargaFreezer: papanHargaFreezer,
+                      periodePromo: periodePromo,
                       priceTagTg: priceTagTg,
                       priceTagIsland: priceTagIsland,
                       statusPopPromo: statusPopPromo,
@@ -228,12 +230,11 @@ class CheckOutView extends HookConsumerWidget {
                     isLoading.value = true;
                     final id = ref.watch(absensiProvider).asData?.value.id ?? 0;
                     final checkOut = CheckOutModel(
-                        kualitasBaik:
-                            int.tryParse(kualitasBaikController.text) ?? 0,
-                        kualitasRusak:
-                            int.tryParse(kualitasBurukController.text) ?? 0,
+                        kualitasProduk: kualitasProduk.value ?? "",
+                        produkRusak: produkRusak.text,
                         papanHargaFreezer: papanHargaFreezer.value ?? "",
                         priceTagTg: priceTagTg.value ?? "",
+                        periodePromo: periodePromo.value,
                         priceTagIsland: priceTagIsland.value ?? "",
                         statusPopPromo: statusPopPromo.value ?? "",
                         kelengkapanItem:
