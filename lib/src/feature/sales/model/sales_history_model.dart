@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class SalesHistoryModel {
   final int id;
-  final int userId;
+  final String userId;
   final String createdAt;
   final int pilihanTokoId;
   final String namaToko;
@@ -19,7 +19,7 @@ class SalesHistoryModel {
 
   SalesHistoryModel copyWith({
     int? id,
-    int? userId,
+    String? userId,
     String? createdAt,
     int? pilihanTokoId,
     String? namaToko,
@@ -49,7 +49,7 @@ class SalesHistoryModel {
   factory SalesHistoryModel.fromMap(Map<String, dynamic> map) {
     return SalesHistoryModel(
       id: map['id'] as int,
-      userId: map['userId'] as int,
+      userId: map['userId'] as String,
       createdAt: map['createdAt'],
       pilihanTokoId: map['pilihanTokoId'] as int,
       namaToko: map['namaToko'] as String,

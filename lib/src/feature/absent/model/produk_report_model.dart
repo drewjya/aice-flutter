@@ -37,9 +37,9 @@ class ProdukReportModel {
     };
   }
 
-  factory ProdukReportModel.fromMap(Map<String, dynamic> map) {
+  factory ProdukReportModel.fromMap(Map<String, dynamic> map, List<ProdukModel> produkList) {
     dPrint(map.keys);
-    final data = ProdukModel.produkList()
+    final data = produkList
         .where((element) => element.kodeProduk == map['produkId'] as String)
         .toList();
     return ProdukReportModel(
@@ -52,8 +52,6 @@ class ProdukReportModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProdukReportModel.fromJson(String source) =>
-      ProdukReportModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

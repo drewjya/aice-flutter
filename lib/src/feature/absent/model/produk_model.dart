@@ -40,8 +40,8 @@ class ProdukModel {
 
   factory ProdukModel.fromMap(Map<String, dynamic> map) {
     return ProdukModel(
-      kodeProduk: map['kodeProduk'] as String,
-      namaProduk: map['namaProduk'] as String,
+      kodeProduk: map['KodeProduk'] as String,
+      namaProduk: map['NamaProduk'] as String,
     );
   }
 

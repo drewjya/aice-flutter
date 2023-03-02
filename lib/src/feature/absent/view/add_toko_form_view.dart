@@ -1,3 +1,4 @@
+import 'package:aice/src/feature/absent/providers/list_produk_provider.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,7 @@ class AddTokoFormView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final produkModelList = ProdukModel.produkList();
+    final produkModelList = ref.watch(listProdukProvider).asData?.value ?? [];
     final produkModel = useState<ProdukModel?>(null);
     final hargaProdukController = useTextEditingController();
     final qtyProdukController = useTextEditingController();

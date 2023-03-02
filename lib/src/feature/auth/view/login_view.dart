@@ -1,4 +1,6 @@
+import 'package:aice/src/feature/absent/providers/list_produk_provider.dart';
 import 'package:aice/src/src.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,29 +16,65 @@ class LoginView extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final isObscure = useState(true);
     useEffect(() {
-      //Admin SPG 1
-      emailController.text = 'aice@adminspg.com';
-      passwordController.text = 'Admin123';
-      //Admin SPG 2
-      emailController.text = 'aice@adminspg2.com';
-      passwordController.text = 'Admin123';
-      //Admin MD 2
-      // emailController.text = 'aice@adminmd.com';
-      // passwordController.text = 'Admin123';
+      if (kDebugMode) {
+        //Admin SPG 1
+        emailController.text = 'aice@adminspg.com';
+        passwordController.text = 'Admin123';
+        //Admin SPG 2
+        emailController.text = 'aice@adminspg2.com';
+        passwordController.text = 'Admin123';
+        //Admin MD 2
+        // emailController.text = 'aice@adminmd.com';
+        // passwordController.text = 'Admin123';
+      }
 
       return null;
     }, [""]);
     final isLoading = useState(false);
 
-    ref.listen(authProvider, (previous, ProviderValue next) {
+    ref.listen(authProvider, (previous, ProviderValue<AuthModel> next) {
       next.when(
         data: (data) {
-          isLoading.value = false;
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            MainView.routeName,
-            (route) => false,
+          if (SharedPrefs.getIsFirstTime()) {
+            if (data.jenisAkun == "SPG") {
+              ref.read(listProdukProvider.notifier).loadData();
+            }
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              MainView.routeName,
+              (route) => false,
+            );
+            return;
+          }
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text.rich(
+                  TextSpan(text: "Password Anda Saat ini adalah\n", children: [
+                    TextSpan(
+                        text: passwordController.text,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: "\nMohon Ingat Baik-Baik!")
+                  ]),
+                  textAlign: TextAlign.center,
+                ),
+                actions: [
+                  ElevatedButton(
+                      onPressed: () {
+                        SharedPrefs.setIsFirstTime();
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          MainView.routeName,
+                          (route) => false,
+                        );
+                      },
+                      child: const Center(child: Text("Oke")))
+                ],
+              );
+            },
           );
+          isLoading.value = false;
         },
         error: (error) {
           isLoading.value = false;

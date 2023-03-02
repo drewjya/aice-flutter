@@ -80,11 +80,11 @@ class AbsentRepositoryImpl extends AbsentRepository {
   }
   
   @override
-  Future<AbsensiDetailModel> getAbsensiDetail(int id) async {
+  Future<AbsensiDetailModel> getAbsensiDetail(int id, List<ProdukModel> produkList) async {
     try {
       final res = await req.get(
         url: "${ApiUrl.getAbsensiDetailToday}/$id",
-        fromJson: (p0) => AbsensiDetailModel.fromMap(p0),
+        fromJson: (p0) => AbsensiDetailModel.fromMap(p0, produkList),
       );
       dPrint(res);
       return res!;
@@ -111,6 +111,19 @@ class AbsentRepositoryImpl extends AbsentRepository {
         fromJson: (p0) => p0,
       );
       return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  @override
+  Future<List<ProdukModel>> getProdukList() async {
+    try {
+      final res = await req.getList(
+        url: ApiUrl.getProduk,
+        fromJson: (p0) => ProdukModel.fromMap(p0),
+      );
+      return res ?? [];
     } catch (e) {
       rethrow;
     }

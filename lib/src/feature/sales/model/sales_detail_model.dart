@@ -30,7 +30,7 @@ enum PilihanToko {
 
 class SalesDetail {
   final int id;
-  final int userId;
+  final String userId;
   final String createdAt;
   final int pilihanTokoId;
   final String namaToko;
@@ -119,7 +119,7 @@ class SalesDetail {
 
   SalesDetail copyWith({
     int? id,
-    int? userId,
+    String? userId,
     String? createdAt,
     int? pilihanTokoId,
     String? namaToko,
@@ -258,7 +258,7 @@ class SalesDetail {
   factory SalesDetail.fromMap(Map<String, dynamic> map) {
     return SalesDetail(
       id: map['id'] as int,
-      userId: map['userId'] as int,
+      userId: map['userId'] as String,
       createdAt: map['createdAt'] as String,
       pilihanTokoId: map['pilihanTokoId'] as int,
       namaToko: map['namaToko'] as String,

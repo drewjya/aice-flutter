@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aice/src/feature/absent/providers/list_produk_provider.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -347,6 +348,7 @@ class ListProdukReport extends ConsumerWidget {
                 return;
               }
               ref.read(inputAbsensiProvider.notifier).sendProdukList(
+                produkList: ref.read(listProdukProvider).asData!.value,
                   absensiSpgId: absen.absensiId,
                   produkReportModel: listProdukReport,
                   formAbsensiId: absen.formAbsensiId);

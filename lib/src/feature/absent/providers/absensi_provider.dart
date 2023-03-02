@@ -76,6 +76,7 @@ class InputAbsensiNotifier extends StateNotifier<ProviderValue<void>> {
     required List<ProdukReportModel> produkReportModel,
     required int formAbsensiId,
     required int absensiSpgId,
+    required List<ProdukModel> produkList
   }) async {
     state = const ProviderValue.loading();
     final val = await ProviderValue.guard(() => ref
@@ -89,7 +90,7 @@ class InputAbsensiNotifier extends StateNotifier<ProviderValue<void>> {
       return;
     }
     ref.invalidate(listProdukReportProvider);
-    ref.read(absensiDetailProvider.notifier).loadData();
+    ref.read(absensiDetailProvider.notifier).loadData(produkList);
     ref.read(absensiProvider.notifier).getAbsensi();
     state = val;
   }

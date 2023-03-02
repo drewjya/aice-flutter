@@ -1,3 +1,4 @@
+import 'package:aice/src/feature/absent/providers/list_produk_provider.dart';
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -67,7 +68,10 @@ class FeedBody extends StatelessWidget {
             return InkWell(
               onTap: !status
                   ? null
-                  : () {
+                  : () async {
+                      if (ref.read(listProdukProvider).asData?.value == null) {
+                        ref.read(listProdukProvider.notifier).loadData();
+                      }
                       Navigator.pushNamed(context, AbsensiDetailView.routeName);
                     },
               child: Container(

@@ -34,7 +34,7 @@ class AuthRepositoryImpl extends AuthRepository {
       required String password,
       required String jenisAkun}) async {
     try {
-      final uuid = Uuid().v5(namespace, name);
+      final uuid = const Uuid().v4();
       final res = await req.post(
         url: ApiUrl.register,
         auth: true,
@@ -42,7 +42,8 @@ class AuthRepositoryImpl extends AuthRepository {
           "email": email,
           "password": password,
           "jenisAkun": jenisAkun,
-          'name': nama
+          'name': nama,
+          "uid": uuid,
         },
         fromJson: (p0) => p0,
       );

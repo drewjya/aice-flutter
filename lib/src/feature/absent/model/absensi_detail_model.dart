@@ -155,7 +155,7 @@ class AbsensiDetailModel {
     };
   }
 
-  factory AbsensiDetailModel.fromMap(Map<String, dynamic> map) {
+  factory AbsensiDetailModel.fromMap(Map<String, dynamic> map, List<ProdukModel> produkList) {
     return AbsensiDetailModel(
       absensiId: map['absensiId'] as int,
       formAbsensiId: map['formAbsensiId'] as int,
@@ -176,7 +176,7 @@ class AbsensiDetailModel {
       pilihanTokoId: map['pilihanTokoId'] as int,
       priceTagIsland: map['priceTagIsland'] as String,
       priceTagTg: map['priceTagTg'] as String,
-      products: List<ProdukReportModel>.from((map['products'] as List).map<ProdukReportModel>((x) => ProdukReportModel.fromMap(x as Map<String,dynamic>),),),
+      products: List<ProdukReportModel>.from((map['products'] as List).map<ProdukReportModel>((x) => ProdukReportModel.fromMap(x as Map<String,dynamic>, produkList),),),
       statusPopPromo: map['statusPopPromo'] as String,
       waktuCheckIn: map['waktuCheckIn'] as String,
       waktuCheckOut: map['waktuCheckOut'] as String,
@@ -188,8 +188,6 @@ class AbsensiDetailModel {
   }
 
   String toJson() => json.encode(toMap());
-
-  factory AbsensiDetailModel.fromJson(String source) => AbsensiDetailModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

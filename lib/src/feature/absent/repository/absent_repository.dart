@@ -6,10 +6,11 @@ abstract class AbsentRepository {
   Future postFormAbsensi({required CheckOutModel checkOutModel});
   Future<AbsensiModel> getAbsensiToday();
   Future postGambar({required FotoDto fotoDto, required int absensiId});
-  Future<AbsensiDetailModel> getAbsensiDetail(int id);
+  Future<AbsensiDetailModel> getAbsensiDetail(int id, List<ProdukModel> produkList);
   Future postProdukPenjualan({
     required List<ProdukReportModel> produkPenjualan,
     required int formAbsensiId,
     required int absensiSpgId,
   });
+  Future<List<ProdukModel>> getProdukList();
 }

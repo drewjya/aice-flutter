@@ -4,7 +4,7 @@ class ApiUrl {
   static const _baseUrl = _isTest ? 'https://$_url/api' : "http://";
   static const _baseImageUrl = _isTest ? 'https://$_url' : "http://";
 
-  static const version = "1.5";
+  static const version = "1.5.5";
 
   //Auth
   static const login = '$_baseUrl/auth/login';
@@ -27,6 +27,7 @@ class ApiUrl {
   static const postCheckOut = "$_baseUrl/spg/checkOut";
   static const postFormAbsensi = "$_baseUrl/spg/formAbsensi";
   static const postListProdukPenjualan = "$_baseUrl/spg/addProdukPenjualan";
+  static const getProduk = "$_baseUrl/spg/product";
   static const postImageSpg = "$_baseUrl/image/spg";
 
   //Versi

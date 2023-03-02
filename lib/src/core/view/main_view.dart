@@ -81,6 +81,7 @@ class MainView extends HookConsumerWidget {
           return FloatingActionButton(
             onPressed: () {
               navigatorKey.currentState?.pushNamed(AddView.routeName);
+              // dPrint(ref.read(authProvider).asData?.value.uuid);
             },
             backgroundColor: Colors.black,
             child: const Icon(Icons.add),
