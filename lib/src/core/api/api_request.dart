@@ -10,44 +10,65 @@ class ApiRequest {
       {required String url,
       required TFromJsonBuilder<T> fromJson,
       bool isToken = true}) async {
-    final token = SharedPrefs.getSession();
-    Map<String, String> headers = {};
-    if (token == null && isToken) {
+    try {
+      final token = SharedPrefs.getSession();
+      Map<String, String> headers = {};
+      if (token == null && isToken) {
+        throw ErrorValue(
+            status: ApiFailure.unauthorized, message: "Tidak ada token");
+      }
+
+      if (token != null) {
+        headers = {'Authorization': token};
+      }
+
+      final req = await http.get(Uri.parse(url), headers: headers);
+      dPrint(req.body);
+      final status = req.statusCode;
+
+      final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
+      if (status <= 300) {
+        return dto.data;
+      }
+      throw dto.error!;
+    } on FormatException catch (e) {
       throw ErrorValue(
-          status: ApiFailure.unauthorized, message: "Tidak ada token");
+          status: ApiFailure.badFormat, message: "${e.message} ${e.source}");
+    } on SocketException {
+      throw ErrorValue(
+          message: 'No Internet connection', status: ApiFailure.connection);
+    } on HttpException {
+      throw ErrorValue(
+          message: "Couldn't find the post", status: ApiFailure.notfound);
+    } catch (e) {
+      rethrow;
     }
-
-    if (token != null) {
-      headers = {'Authorization': token};
-    }
-
-    final req =
-        await http.get(Uri.parse(url), headers: headers);
-
-    final status = req.statusCode;
-
-    final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
-    if (status <= 300) {
-      return dto.data;
-    }
-    throw dto.error!;
   }
 
   Future<List<T>?> getList<T>(
       {required String url, required TFromJsonBuilder<T> fromJson}) async {
-    final token = SharedPrefs.getSession();
-    if (token == null) {
+    try {
+      final token = SharedPrefs.getSession();
+      if (token == null) {
+        throw ErrorValue(
+            status: ApiFailure.unauthorized, message: "Tidak ada token");
+      }
+      final req =
+          await http.get(Uri.parse(url), headers: {'Authorization': token});
+      dPrint(req.body);
+      final status = req.statusCode;
+      final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
+      if (status <= 300) {
+        return dto.dataList;
+      }
+      throw dto.error!;
+    } on FormatException catch (e) {
+      dPrint(e);
       throw ErrorValue(
-          status: ApiFailure.unauthorized, message: "Tidak ada token");
+          status: ApiFailure.badFormat, message: "${e.message} ${e.source}");
+    } catch (e) {
+      rethrow;
     }
-    final req =
-        await http.get(Uri.parse(url), headers: {'Authorization': token});
-    final status = req.statusCode;
-    final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
-    if (status <= 300) {
-      return dto.dataList;
-    }
-    throw dto.error!;
   }
 
   Future<T?> post<T>(
@@ -79,6 +100,7 @@ class ApiRequest {
         headers: header,
         body: val,
       );
+      dPrint(req.body);
       final status = req.statusCode;
 
       final dto = ApiDTO<T>.fromMap(jsonDecode(req.body), fromJson, status);
@@ -86,6 +108,9 @@ class ApiRequest {
         return dto.data;
       }
       throw dto.error!;
+    } on FormatException catch (e) {
+      throw ErrorValue(
+          status: ApiFailure.badFormat, message: "${e.message} ${e.source}");
     } catch (e) {
       rethrow;
     }
@@ -97,30 +122,37 @@ class ApiRequest {
       required String keteranganFoto,
       required String idParam,
       required String url}) async {
-    final token = SharedPrefs.getSession();
-    if (token == null) {
+    try {
+      final token = SharedPrefs.getSession();
+      if (token == null) {
+        throw ErrorValue(
+            status: ApiFailure.unauthorized, message: "Session Sudah Habis");
+      }
+      final request = http.MultipartRequest('POST', Uri.parse(url));
+      final fileStream = http.ByteStream(file.openRead());
+      final length = await file.length();
+      final multipartFile =
+          http.MultipartFile('foto', fileStream, length, filename: file.path);
+
+      request.fields[idParam] = id.toString();
+      request.fields['keteranganFoto'] = keteranganFoto;
+      request.files.add(multipartFile);
+      request.headers.addAll(
+          {'Content-Type': 'multipart/form-data', 'Authorization': token});
+
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        return 'File uploaded successfully.';
+      } else {
+        throw ErrorValue(
+            status: ApiFailure.server, message: 'Gagal mengupload gambar');
+      }
+    } on FormatException catch (e) {
       throw ErrorValue(
-          status: ApiFailure.unauthorized, message: "Session Sudah Habis");
-    }
-    final request = http.MultipartRequest('POST', Uri.parse(url));
-    final fileStream = http.ByteStream(file.openRead());
-    final length = await file.length();
-    final multipartFile =
-        http.MultipartFile('foto', fileStream, length, filename: file.path);
-
-    request.fields[idParam] = id.toString();
-    request.fields['keteranganFoto'] = keteranganFoto;
-    request.files.add(multipartFile);
-    request.headers.addAll(
-        {'Content-Type': 'multipart/form-data', 'Authorization': token});
-
-    final response = await request.send();
-
-    if (response.statusCode == 200) {
-      return 'File uploaded successfully.';
-    } else {
-      throw ErrorValue(
-          status: ApiFailure.server, message: 'Gagal mengupload gambar');
+          status: ApiFailure.badFormat, message: "${e.message} ${e.source}");
+    } catch (e) {
+      rethrow;
     }
   }
 }

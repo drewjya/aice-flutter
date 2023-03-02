@@ -22,14 +22,18 @@ abstract class ProviderValue<T> {
       return ProviderValue.error(err);
     } catch (e) {
       dPrint(e);
+      print(e);
       String message;
       try {
         final error = e as dynamic;
         message = error.message;
       } catch (e) {
-        message = 'Harap Hubungi Tim IT';
+        message = 'Harap Hubungi Tim IT $e';
       }
-      final err = ErrorValue(status: ApiFailure.notfound, message: message);
+      final err = ErrorValue(
+        status: ApiFailure.notfound,
+        message: message,
+      );
       return ProviderValue.error(err);
     }
   }

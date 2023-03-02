@@ -4,6 +4,7 @@ typedef TFromJsonBuilder<T> = T Function(Map<String, dynamic>);
 
 enum ApiFailure {
   init(0),
+  badFormat(99),
   connection(503),
   badrequest(400),
   unauthorized(401),

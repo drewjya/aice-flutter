@@ -29,7 +29,7 @@ class VersionModel {
   factory VersionModel.fromMap(Map<String, dynamic> map) {
     return VersionModel(
       id: map['id'] as int,
-      version: map['version'].toString(),
+      version: map['version'],
     );
   }
 

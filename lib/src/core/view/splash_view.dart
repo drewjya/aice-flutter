@@ -27,6 +27,7 @@ class SplashView extends HookConsumerWidget {
           if (error is ErrorValue) {
             errorMessage.value = (error).message;
           } else {
+            print(error.runtimeType);
             errorMessage.value = "Harap Hubungi Tim IT";
           }
         },

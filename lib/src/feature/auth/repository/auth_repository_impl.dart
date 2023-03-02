@@ -1,12 +1,12 @@
 import 'package:aice/src/src.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final ApiRequest req;
   final Ref ref;
   AuthRepositoryImpl(this.ref, this.req);
-  
 
   @override
   Future<AuthModel> logIn(
@@ -34,6 +34,7 @@ class AuthRepositoryImpl extends AuthRepository {
       required String password,
       required String jenisAkun}) async {
     try {
+      final uuid = Uuid().v5(namespace, name);
       final res = await req.post(
         url: ApiUrl.register,
         auth: true,
