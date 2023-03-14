@@ -28,7 +28,7 @@ class SplashView extends HookConsumerWidget {
           if (error is ErrorValue) {
             errorMessage.value = (error).message;
           } else {
-            errorMessage.value = "Harap Hubungi Tim It $error, $stackTrace";
+            errorMessage.value = "Harap Hubungi Tim It \n$error, $stackTrace";
           }
         },
       );
