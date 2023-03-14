@@ -95,6 +95,10 @@ class AddTokoFormView extends HookConsumerWidget {
                   }
                   return null;
                 },
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: 'Jumlah Produk'),
               ),

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:aice/src/src.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class CheckOutDetailForm extends StatelessWidget {
@@ -186,6 +187,10 @@ class CheckOutDetailForm extends StatelessWidget {
             TextFormField(
               controller: kelengkapanItem,
               keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                FilteringTextInputFormatter.digitsOnly
+              ],
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Kelengkapan Item tidak boleh kosong";

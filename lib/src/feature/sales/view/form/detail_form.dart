@@ -1,5 +1,6 @@
 import 'package:aice/src/feature/feature.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DetailForm extends StatelessWidget {
   const DetailForm({
@@ -401,6 +402,10 @@ class DetailForm extends StatelessWidget {
         TextFormField(
           controller: jumlahPOController,
           keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            FilteringTextInputFormatter.digitsOnly
+          ],
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Jumlah PO tidak boleh kosong";
@@ -412,6 +417,10 @@ class DetailForm extends StatelessWidget {
         TextFormField(
           controller: jumlahItemTerdisplayController,
           keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            FilteringTextInputFormatter.digitsOnly
+          ],
           decoration: const InputDecoration(
             labelText: 'Jumlah Item Terdisplay',
           ),
