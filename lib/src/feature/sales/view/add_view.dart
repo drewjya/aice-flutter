@@ -65,8 +65,8 @@ class AddView extends HookConsumerWidget {
       next.maybeWhen(
         orElse: () {},
         data: (data) {
+          ref.read(salesHistoryTodayProvider.notifier).load();
           navigatorKey.currentState?.pop();
-          
         },
         error: (error) {
           isLoading.value = false;
@@ -263,7 +263,12 @@ class AddView extends HookConsumerWidget {
                 foregroundColor: Colors.white,
                 child: const Icon(Icons.done),
                 onPressed: () {
-                  if (imageKey.currentState?.validate() ?? false) {
+                  dPrint(
+                      int.tryParse(jumlahPOController.text.getNumbers()) ?? 0);
+                  dPrint(int.tryParse(
+                          jumlahItemTerdisplayController.text.getNumbers()) ??
+                      0);
+                  if ((imageKey.currentState?.validate() ?? false)) {
                     final salesDto = SalesDto(
                         pilihanTokoId: pilihanToko.value?.value ?? 1,
                         namaToko: namaTokoController.text,
@@ -287,10 +292,13 @@ class AddView extends HookConsumerWidget {
                         kebersihanLemFreezer: bekasLemFreezer.value ?? "",
                         kebersihanDebuFreezer: debuFreezer.value ?? "",
                         posisiFreezer: posisiFreezer.value ?? "",
-                        jumlahPO: int.tryParse(jumlahPOController.text) ?? 0,
-                        jumlahItemTerdisplay:
-                            int.tryParse(jumlahItemTerdisplayController.text) ??
-                                0,
+                        jumlahPO: int.tryParse(
+                                jumlahPOController.text.getNumbers()) ??
+                            0,
+                        jumlahItemTerdisplay: int.tryParse(
+                                jumlahItemTerdisplayController.text
+                                    .getNumbers()) ??
+                            0,
                         saranDanKendala: saranDanKendalaController.text,
                         produkRetur: productReturController.text,
                         kategoriFreezer: kategoriFreezer.value ?? "",

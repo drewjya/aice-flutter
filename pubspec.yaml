@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 7.0.0+1
+version: 7.0.2+10
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -27,7 +27,7 @@ dependencies:
   meta: ^1.8.0
   shared_preferences: ^2.0.17
   geolocator: ^9.0.2
-
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

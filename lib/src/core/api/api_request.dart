@@ -21,7 +21,6 @@ class ApiRequest {
       if (token != null) {
         headers = {'Authorization': token};
       }
-
       final req = await http.get(Uri.parse(url), headers: headers);
       dPrint(req.body);
       final status = req.statusCode;

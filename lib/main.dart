@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case SplashView.routeName:
               return GenRoute.routeDef(page: const SplashView());
-            
+
             case AbsensiDetailView.routeName:
               return GenRoute.routeDef(page: const AbsensiDetailView());
             case LoginView.routeName:

@@ -4,18 +4,22 @@ import 'dart:convert';
 class VersionModel {
   final int id;
   final String version;
+  final bool beta;
   VersionModel({
     required this.id,
     required this.version,
+    required this.beta,
   });
 
   VersionModel copyWith({
     int? id,
     String? version,
+    bool? beta,
   }) {
     return VersionModel(
       id: id ?? this.id,
       version: version ?? this.version,
+      beta: beta ?? this.beta,
     );
   }
 
@@ -23,13 +27,15 @@ class VersionModel {
     return <String, dynamic>{
       'id': id,
       'version': version,
+      'beta': beta,
     };
   }
 
   factory VersionModel.fromMap(Map<String, dynamic> map) {
     return VersionModel(
       id: map['id'] as int,
-      version: map['version'],
+      version: map['version'] as String,
+      beta: map['beta'] as bool,
     );
   }
 
@@ -39,15 +45,18 @@ class VersionModel {
       VersionModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'VersionModel(id: $id, version: $version)';
+  String toString() => 'VersionModel(id: $id, version: $version, beta: $beta)';
 
   @override
   bool operator ==(covariant VersionModel other) {
     if (identical(this, other)) return true;
-
-    return other.id == id && other.version == version;
+  
+    return 
+      other.id == id &&
+      other.version == version &&
+      other.beta == beta;
   }
 
   @override
-  int get hashCode => id.hashCode ^ version.hashCode;
+  int get hashCode => id.hashCode ^ version.hashCode ^ beta.hashCode;
 }

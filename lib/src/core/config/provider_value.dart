@@ -22,13 +22,7 @@ abstract class ProviderValue<T> {
       return ProviderValue.error(err);
     } catch (e) {
       dPrint(e);
-      String message;
-      try {
-        final error = e as dynamic;
-        message = error.message;
-      } catch (e) {
-        message = 'Harap Hubungi Tim IT $e';
-      }
+      String message = 'Harap Hubungi Tim IT  $e';
       final err = ErrorValue(
         status: ApiFailure.notfound,
         message: message,
@@ -442,3 +436,4 @@ extension ProviderValueX<T> on ProviderValue<T> {
     );
   }
 }
+

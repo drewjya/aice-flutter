@@ -239,7 +239,8 @@ class CheckOutView extends HookConsumerWidget {
                         priceTagIsland: priceTagIsland.value ?? "",
                         statusPopPromo: statusPopPromo.value ?? "",
                         kelengkapanItem:
-                            int.tryParse(kelengkapanItem.text) ?? 0,
+                            int.tryParse(kelengkapanItem.text.getNumbers()) ??
+                                0,
                         kebersihanFreezer: kebersihanFreezer.value ?? "",
                         promosiAktif: promosiDetail.text,
                         itemKosong: itemKosong.text,

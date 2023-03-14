@@ -152,7 +152,6 @@ class CheckOutDetailForm extends StatelessWidget {
             ),
             TextFormField(
               controller: promosiDetail,
-              // keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Promosi Detail tidak boleh kosong";

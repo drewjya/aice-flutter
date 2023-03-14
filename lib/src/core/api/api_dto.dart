@@ -77,7 +77,7 @@ class ApiDTO<T> {
           .toList();
     } else {
       dataVal = map['data'] != null
-          ? fromJson(map['data'] as Map<String, dynamic>)
+          ? fromJson((map['data'] as Map<String, dynamic>?) ?? {})
           : null;
     }
     final data = ApiDTO<T>(

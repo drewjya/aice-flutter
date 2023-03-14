@@ -32,5 +32,5 @@ class SalesFormNotifier extends StateNotifier<ProviderValue<SalesDetail>> {
 }
 
 final salesFormProvider =
-    StateNotifierProvider<SalesFormNotifier, ProviderValue<SalesDetail>>(
+    StateNotifierProvider<SalesFormNotifier, ProviderValue>(
         SalesFormNotifier.new);

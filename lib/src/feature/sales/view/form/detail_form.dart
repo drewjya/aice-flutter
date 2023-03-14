@@ -434,7 +434,6 @@ class DetailForm extends StatelessWidget {
         ),
         TextFormField(
           controller: productReturController,
-          keyboardType: TextInputType.number,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Produk Retur tidak boleh kosong";
