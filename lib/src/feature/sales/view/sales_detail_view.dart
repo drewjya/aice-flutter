@@ -61,7 +61,7 @@ class SalesDetailView extends ConsumerWidget {
                         value: curr?.kualitasProduk,
                       ),
                       DetailText(
-                        param: "Sticker Freezer",
+                        param: "Sticker Body Freezer",
                         value: curr?.stickerFreezer,
                       ),
                       DetailText(

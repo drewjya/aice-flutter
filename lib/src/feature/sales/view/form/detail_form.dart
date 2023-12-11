@@ -109,7 +109,7 @@ class DetailForm extends StatelessWidget {
               child: Text(value),
             );
           },
-          title: "Sticker Freezer",
+          title: "Sticker Body Freezer",
           toName: (value) {
             return value ?? "";
           },

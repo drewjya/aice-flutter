@@ -4,7 +4,7 @@ class ApiUrl {
   static const _baseUrl = _isTest ? 'https://$_url/api' : "http://";
   static const _baseImageUrl = _isTest ? 'https://$_url' : "http://";
 
-  static const version = "1.6.0";
+  static const version = "1.6.2";
 
   //Auth
   static const login = '$_baseUrl/auth/login';
